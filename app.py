@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.errorhandler(404)
 def not_found(err):
-    return "нет такой страницы", 404
+    return "Нет такой страницы :-()", 404
 
 @app.route("/web")
 def web():
@@ -72,9 +72,17 @@ def counter():
         Дата и время: ''' + str(time) + '''<br>
         Запрошенный адрес: ''' + str(url) + '''<br>
         Ваш IP адрес: ''' + str(client_ip) + '''<br>
+        <hr>
+        <a href="/reset_counter">Сбросить счетчик</a> | 
     </body>
 </html>
 '''
+
+@app.route("/reset_counter")
+def reset_counter():
+    global count
+    count = 0
+    return redirect("/counter")
 
 @app.route("/info")
 def info():
