@@ -1,10 +1,144 @@
-from flask import Flask, url_for, request, redirect
+from flask import Flask, url_for, request, redirect, abort
 import datetime
+from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
+
+###
+class PaymentRequired(HTTPException):
+    code = 402
+    description = 'Требуется оплата'
 
 @app.errorhandler(404)
 def not_found(err):
     return "Нет такой страницы :-(", 404
+
+@app.errorhandler(400)
+def bad_request(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>400 Bad Request</title>
+    </head>
+    <body>
+        <h1>400 - Плохой запрос</h1>
+        <p>Сервер не может обработать запрос из-за неверного синтаксиса.</p>
+        <p>Проверьте правильность введенных данных и повторите попытку.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 400
+
+@app.errorhandler(401)
+def unauthorized(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>401 Unauthorized</title>
+    </head>
+    <body>
+        <h1>401 - Не авторизован</h1>
+        <p>Для доступа к запрашиваемому ресурсу требуется аутентификация.</p>
+        <p>Пожалуйста, войдите в систему с действительными учетными данными.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 401
+
+###
+@app.errorhandler(PaymentRequired)
+def payment_required(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>402 Payment Required</title>
+    </head>
+    <body>
+        <h1>402 - Требуется оплата</h1>
+        <p>Этот код зарезервирован для будущего использования.</p>
+        <p>Изначально предполагалось использовать для цифровых платежных систем.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 402
+
+@app.errorhandler(403)
+def forbidden(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>403 Forbidden</title>
+    </head>
+    <body>
+        <h1>403 - Запрещено</h1>
+        <p>У вас нет прав доступа к запрашиваемому ресурсу.</p>
+        <p>Сервер понял запрос, но отказывается его авторизовать.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 403
+
+@app.errorhandler(405)
+def method_not_allowed(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>405 Method Not Allowed</title>
+    </head>
+    <body>
+        <h1>405 - Метод не разрешен</h1>
+        <p>Метод запроса известен серверу, но не поддерживается для целевого ресурса.</p>
+        <p>Например, POST запрос к ресурсу, который поддерживает только GET.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 405
+
+@app.errorhandler(418)
+def im_a_teapot(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>418 I'm a teapot</title>
+    </head>
+    <body>
+        <h1>418 - Я чайник</h1>
+        <p>Сервер отказывается заваривать кофе, потому что он является чайником.</p>
+        <p>Это шуточный код ошибки из April Fools' jokes (RFC 2324).</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 418
+
+@app.route("/test/400")
+def test_400():
+    abort(400)
+
+@app.route("/test/401")
+def test_401():
+    abort(401)
+
+###
+@app.route("/test/402")
+def test_402():
+    abort(PaymentRequired)
+
+@app.route("/test/403")
+def test_403():
+    abort(403)
+
+@app.route("/test/405")
+def test_405():
+    abort(405)
+
+@app.route("/test/418")
+def test_418():
+    abort(418)
 
 @app.route("/")
 @app.route("/index")
