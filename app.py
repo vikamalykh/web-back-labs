@@ -4,9 +4,22 @@ from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
 
 ###
-class PaymentRequired(HTTPException):
-    code = 402
-    description = 'Требуется оплата'
+@app.errorhandler(402)
+def payment_required(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>402 Payment Required</title>
+    </head>
+    <body>
+        <h1>402 - Требуется оплата</h1>
+        <p>Этот код зарезервирован для будущего использования.</p>
+        <p>Изначально предполагалось использовать для цифровых платежных систем.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 402
 
 @app.errorhandler(404)
 def not_found(err):
@@ -45,24 +58,6 @@ def unauthorized(err):
     </body>
 </html>
 ''', 401
-
-###
-@app.errorhandler(PaymentRequired)
-def payment_required(err):
-    return '''
-<!doctype html>
-<html>
-    <head>
-        <title>402 Payment Required</title>
-    </head>
-    <body>
-        <h1>402 - Требуется оплата</h1>
-        <p>Этот код зарезервирован для будущего использования.</p>
-        <p>Изначально предполагалось использовать для цифровых платежных систем.</p>
-        <a href="/">На главную</a>
-    </body>
-</html>
-''', 402
 
 @app.errorhandler(403)
 def forbidden(err):
@@ -123,10 +118,9 @@ def test_400():
 def test_401():
     abort(401)
 
-###
 @app.route("/test/402")
 def test_402():
-    abort(PaymentRequired)
+    abort(402)
 
 @app.route("/test/403")
 def test_403():
