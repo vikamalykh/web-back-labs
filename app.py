@@ -265,6 +265,24 @@ def lab1():
                 называемых микрофреймворков — минималистичных каркасов
                 веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
             </p>
+
+            <h2>Список роутов</h2>
+            <ul>
+                <li><a href="/lab1/web">/lab1/web</a> - Web сервер</li>
+                <li><a href="/lab1/author">/lab1/author</a> - Об авторе</li>
+                <li><a href="/lab1/image">/lab1/image</a> - Изображение дуба</li>
+                <li><a href="/lab1/counter">/lab1/counter</a> - Счетчик посещений</li>
+                <li><a href="/lab1/reset_counter">/lab1/reset_counter</a> - Сброс счетчика</li>
+                <li><a href="/lab1/info">/lab1/info</a> - Перенаправление на автора</li>
+                <li><a href="/lab1/created">/lab1/created</a> - Страница создания</li>
+                <li><a href="/test/400">/test/400</a> - Тест ошибки 400</li>
+                <li><a href="/test/401">/test/401</a> - Тест ошибки 401</li>
+                <li><a href="/test/402">/test/402</a> - Тест ошибки 402</li>
+                <li><a href="/test/403">/test/403</a> - Тест ошибки 403</li>
+                <li><a href="/test/405">/test/405</a> - Тест ошибки 405</li>
+                <li><a href="/test/418">/test/418</a> - Тест ошибки 418</li>
+                <li><a href="/test/500">/test/500</a> - Тест ошибки 500</li>
+            </ul>
         </main>
         
         <footer>
@@ -308,6 +326,11 @@ def author():
 def image():
     css_path = url_for("static", filename="lab1.css")
     image_path = url_for("static", filename="oak.jpg")
+    headers = {
+        'Content-Language': 'ru-RU',
+        'X-Custom-Header-1': 'Hello-World',
+        'X-Custom-Header-2': 'Flask-App'
+    }
     return f'''
 <!doctype html>
 <html>
@@ -321,7 +344,7 @@ def image():
         </div>
     </body>
 </html>
-'''
+''', 200, headers
 
 count = 0
 @app.route("/lab1/counter")
