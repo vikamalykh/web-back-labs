@@ -7,7 +7,43 @@ app = Flask(__name__)
 
 @app.errorhandler(404)
 def not_found(err):
-    return "Нет такой страницы :-(", 404
+    css_path = url_for("static", filename="error.css")
+    image_path = url_for("static", filename="poisk.jpg")
+    return f'''
+<!doctype html>
+<html>
+    <head>
+        <title>404 Страница не найдена</title>
+        <link rel="stylesheet" href="{css_path}">
+    </head>
+    <body class="error-body">
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">Ой! Кажется мы потеряли вашу страницу :-(</h2>
+            
+            <div class="error-image-container">
+                <img src="{image_path}" alt="Поиск" class="error-image">
+            </div>
+            
+            <p class="error-message">
+                Не переживайте, возможно, она скоро вернётся!
+            </p>
+            
+            <div class="error-suggestions">
+                <h3>Как решить проблему?</h3>
+                <ul>
+                    <li>Проверить правильность URL-адреса</li>
+                    <li>Вернуться на предыдущую страницу</li>
+                    <li>Вернуться на главную страницу</li>
+                    <li>Сообщите об ошибке, если мы вам не помогли :-(</li>
+                </ul>
+            </div>
+            
+            <a href="/" class="error-home-button">Вернуться на главную</a>
+        </div>
+    </body>
+</html>
+''', 404
 
 #создаем собственное исключение для кода 402
 class PaymentRequired(HTTPException):
