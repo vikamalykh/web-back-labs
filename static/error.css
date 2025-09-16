@@ -1,0 +1,109 @@
+.error-body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(45deg, #e6f7ff 0%, #78a8d4 100%);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #2c3e50;
+}
+
+.error-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 550px;
+    margin: 20px;
+    border: 1px solid #e3f2fd;
+}
+
+.error-code {
+    font-size: 100px;
+    font-weight: 800;
+    color: #365db3;
+    margin: 0;
+    text-shadow: 2px 2px 0 #b3e0ff;
+    letter-spacing: 2px;
+}
+
+.error-title {
+    font-size: 24px;
+    color: #2980b9;
+    margin: 15px 0 25px 0;
+    font-weight: 600;
+}
+
+.error-message {
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 20px 0;
+    color: #34495e;
+    padding: 0 10px;
+}
+
+.error-image-container {
+    margin: 25px 0;
+}
+
+.error-image {
+    max-width: 220px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.error-image:hover {
+    transform: scale(1.02);
+}
+
+.error-home-button {
+    display: inline-block;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.error-home-button:hover {
+    background: linear-gradient(45deg, #2980b9, #2471a3);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.error-suggestions {
+    background: #f8fafc;
+    padding: 18px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: left;
+    border-left: 4px solid #3498db;
+}
+
+.error-suggestions h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.error-suggestions ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.error-suggestions li {
+    margin: 6px 0;
+    color: #546e7a;
+    font-size: 15px;
+}

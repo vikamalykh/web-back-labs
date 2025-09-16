@@ -1,39 +1,48 @@
 body {
-    background-color: #f0f8ff;
-    color: #2c3e50;
-    font-family: 'Arial', sans-serif;
-    margin: 20px;
+    background: linear-gradient(135deg, #e8f5e8 0%, #a8c8a8 100%);
+    font-family: 'Georgia', serif;
+    margin: 0;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #2d5015;
 }
 
 h1 {
-    color: #2c3e50;
+    color: #3a6b1f;
     text-align: center;
-    font-size: 2.5em;
-    margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    font-size: 42px;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.08);
+    font-style: italic;
+    border-bottom: 2px solid #c9d7c2;
+    padding-bottom: 10px;
 }
 
 img {
-    width: 600px;
-    height: 400px;
+    width: 380px;
+    height: 280px;
     display: block;
     margin: 0 auto;
-    border: 5px solid #34495e;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease;
+    border: 4px double #4a7b2f;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(60, 100, 30, 0.4);
+    transition: all 0.3s ease;
 }
 
 img:hover {
-    transform: scale(1.02);
+    transform: scale(1.03);
+    box-shadow: 0 5px 12px rgba(60, 100, 30, 0.6);
 }
 
 .container {
-    max-width: 800px;
+    max-width: 650px;
     margin: 0 auto;
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    background-color: #f8fbf8;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    border: 1px solid #d0e0d0;
 }
