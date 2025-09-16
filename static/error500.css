@@ -1,0 +1,79 @@
+.error-500-body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #722;
+}
+
+.error-500-container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(200, 0, 0, 0.1);
+    max-width: 600px;
+    border: 2px solid #ffcccc;
+}
+
+.error-500-title {
+    color: #d33;
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.error-500-text {
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 15px 0;
+    color: #444;
+}
+
+.error-500-details {
+    background: #fff5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: left;
+    border-left: 4px solid #d33;
+}
+
+.error-500-details strong {
+    color: #d33;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.error-500-home-button {
+    display: inline-block;
+    background: #d33;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.error-500-home-button:hover {
+    background: #b22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(210, 51, 51, 0.3);
+}
+
+.error-500-contact {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #ffcccc;
+    font-size: 14px;
+    color: #666;
+}
