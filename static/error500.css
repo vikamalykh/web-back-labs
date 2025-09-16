@@ -66,7 +66,6 @@
 
 .error-500-home-button:hover {
     background: #b22;
-    transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(210, 51, 51, 0.3);
 }
 
