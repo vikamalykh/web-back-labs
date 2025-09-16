@@ -153,6 +153,44 @@ def im_a_teapot(err):
 </html>
 ''', 418
 
+@app.errorhandler(500)
+def internal_server_error(err):
+    css_path = url_for("static", filename="error500.css")
+    return f'''
+<!doctype html>
+<html>
+    <head>
+        <title>500 - Внутренняя ошибка сервера</title>
+        <link rel="stylesheet" href="{css_path}">
+    </head>
+    <body class="error-500-body">
+        <div class="error-500-container">
+            <h1 class="error-500-title">500 - Внутренняя ошибка сервера</h1>
+            <p class="error-500-text">К сожалению, на сервере произошла непредвиденная ошибка.</p>
+            
+            <div class="error-500-details">
+                <strong>Что случилось?</strong>
+                <p>Сервер столкнулся с проблемой при обработке вашего запроса.</p>
+                <p>Это может быть временной проблемой! Попробуйте обновить страницу позже.</p>
+            </div>
+            
+            <p class="error-500-text">Мы уже работаем над исправлением ошибки :-)</p>
+            
+            <a href="/" class="error-500-home-button">Вернуться на главную</a>
+            
+            <div class="error-500-contact">
+                Если проблема повторяется, свяжитесь с технической поддержкой!
+            </div>
+        </div>
+    </body>
+</html>
+''', 500
+@app.route("/test/500")
+def test_500():
+    result = 10 / 0
+    return "Этот код никогда не выполнится"
+
+
 @app.route("/test/400")
 def test_400():
     abort(400)
