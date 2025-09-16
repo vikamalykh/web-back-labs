@@ -327,7 +327,7 @@ def image():
     css_path = url_for("static", filename="lab1.css")
     image_path = url_for("static", filename="oak.jpg")
     headers = {
-        'Content-Language': 'ru-RU',
+        'Content-Language': 'ru-RU, en-US, zh-CN, es-ES',
         'X-Custom-Header-1': 'Hello-World',
         'X-Custom-Header-2': 'Flask-App'
     }
