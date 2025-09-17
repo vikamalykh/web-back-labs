@@ -4,11 +4,28 @@ from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
+error_404_log = []
+
 
 @app.errorhandler(404)
 def not_found(err):
+    #информация о текущем запросе
+    client_ip = request.remote_addr
+    access_time = datetime.datetime.now()
+    requested_url = request.url
+    
+    #запись в лог
+    log_entry = f'[{access_time.strftime("%Y-%m-%d %H:%M:%S.%f")}, пользователь {client_ip}] зашёл на адрес: {requested_url}'
+    error_404_log.append(log_entry)
+    
     css_path = url_for("static", filename="error.css")
     image_path = url_for("static", filename="poisk.jpg")
+    
+    #HTML для журнала
+    journal_html = ''
+    for entry in reversed(error_404_log[-10:]):
+        journal_html += f'<div class="log-entry">{entry}</div>'
+    
     return f'''
 <!doctype html>
 <html>
@@ -20,6 +37,13 @@ def not_found(err):
         <div class="error-container">
             <h1 class="error-code">404</h1>
             <h2 class="error-title">Ой! Кажется мы потеряли вашу страницу :-(</h2>
+            
+            <div class="user-info">
+                <h3>Информация о запросе:</h3>
+                <p class="info-item"><strong>IP-адрес:</strong> {client_ip}</p>
+                <p class="info-item"><strong>Дата и время:</strong> {access_time.strftime('%Y-%m-%d %H:%M:%S')}</p>
+                <p class="info-item"><strong>Запрошенный URL:</strong> {requested_url}</p>
+            </div>
             
             <div class="error-image-container">
                 <img src="{image_path}" alt="Поиск" class="error-image">
@@ -40,6 +64,13 @@ def not_found(err):
             </div>
             
             <a href="/" class="error-home-button">Вернуться на главную</a>
+            
+            <div class="error-journal">
+                <h3 class="journal-title">Журнал:</h3>
+                <div class="log-entries">
+                    {journal_html if journal_html else '<p>Пока нет записей в журнале</p>'}
+                </div>
+            </div>
         </div>
     </body>
 </html>
