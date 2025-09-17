@@ -1,4 +1,4 @@
-.error-body {
+.err-body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(45deg, #e6f7ff 0%, #78a8d4 100%);
     margin: 0;
@@ -10,7 +10,7 @@
     color: #2c3e50;
 }
 
-.error-container {
+.err-container {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
     padding: 35px;
@@ -21,7 +21,7 @@
     border: 1px solid #e3f2fd;
 }
 
-.error-code {
+.err-code {
     font-size: 100px;
     font-weight: 800;
     color: #365db3;
@@ -30,14 +30,14 @@
     letter-spacing: 2px;
 }
 
-.error-title {
+.err-title {
     font-size: 24px;
     color: #2980b9;
     margin: 15px 0 25px 0;
     font-weight: 600;
 }
 
-.error-message {
+.err-message {
     font-size: 17px;
     line-height: 1.6;
     margin: 20px 0;
@@ -45,11 +45,11 @@
     padding: 0 10px;
 }
 
-.error-image-container {
+.err-image-container {
     margin: 25px 0;
 }
 
-.error-image {
+.err-image {
     max-width: 220px;
     height: auto;
     border-radius: 12px;
@@ -57,11 +57,11 @@
     transition: transform 0.3s ease;
 }
 
-.error-image:hover {
+.err-image:hover {
     transform: scale(1.02);
 }
 
-.error-home-button {
+.err-button {
     display: inline-block;
     background: linear-gradient(45deg, #3498db, #2980b9);
     color: white;
@@ -76,12 +76,12 @@
     font-size: 16px;
 }
 
-.error-home-button:hover {
+.err-button:hover {
     background: linear-gradient(45deg, #2980b9, #2471a3);
     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
 
-.error-suggestions {
+.err-suggestions {
     background: #f8fafc;
     padding: 18px;
     border-radius: 8px;
@@ -90,26 +90,26 @@
     border-left: 4px solid #3498db;
 }
 
-.error-suggestions h3 {
+.err-suggestions h3 {
     color: #2c3e50;
     margin-top: 0;
     margin-bottom: 12px;
     font-size: 18px;
 }
 
-.error-suggestions ul {
+.err-suggestions ul {
     padding-left: 20px;
     margin: 0;
 }
 
-.error-suggestions li {
+.err-suggestions li {
     margin: 6px 0;
     color: #546e7a;
     font-size: 15px;
 }
 
 
-.user-info {
+.info-use {
     background-color: #e9ecef;
     padding: 15px;
     border-radius: 8px;
@@ -118,7 +118,7 @@
     text-align: left;
 }
 
-.user-info h3 {
+.info-use h3 {
     color: #495057;
     margin-top: 0;
     margin-bottom: 15px;
@@ -161,18 +161,4 @@
     font-family: 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.4;
-}
-
-.log-time {
-    color: #6c757d;
-    font-weight: bold;
-}
-
-.log-user {
-    color: #007bff;
-    margin: 0 8px;
-}
-
-.log-message {
-    color: #28a745;
 }

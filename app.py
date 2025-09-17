@@ -33,27 +33,27 @@ def not_found(err):
         <title>404 Страница не найдена</title>
         <link rel="stylesheet" href="{css_path}">
     </head>
-    <body class="error-body">
-        <div class="error-container">
-            <h1 class="error-code">404</h1>
-            <h2 class="error-title">Ой! Кажется мы потеряли вашу страницу :-(</h2>
+    <body class="err-body">
+        <div class="err-container">
+            <h1 class="err-code">404</h1>
+            <h2 class="err-title">Ой! Кажется мы потеряли вашу страницу :-(</h2>
             
-            <div class="user-info">
+            <div class="info-use">
                 <h3>Информация о запросе:</h3>
                 <p class="info-item"><strong>IP-адрес:</strong> {client_ip}</p>
                 <p class="info-item"><strong>Дата и время:</strong> {access_time.strftime('%Y-%m-%d %H:%M:%S')}</p>
                 <p class="info-item"><strong>Запрошенный URL:</strong> {requested_url}</p>
             </div>
             
-            <div class="error-image-container">
-                <img src="{image_path}" alt="Поиск" class="error-image">
+            <div class="err-image-container">
+                <img src="{image_path}" alt="Поиск" class="err-image">
             </div>
             
-            <p class="error-message">
+            <p class="err-mess">
                 Не переживайте, возможно, она скоро вернётся!
             </p>
             
-            <div class="error-suggestions">
+            <div class="err-suggestions">
                 <h3>Как решить проблему?</h3>
                 <ul>
                     <li>Проверить правильность URL-адреса</li>
@@ -63,7 +63,7 @@ def not_found(err):
                 </ul>
             </div>
             
-            <a href="/" class="error-home-button">Вернуться на главную</a>
+            <a href="/" class="err-button">Вернуться на главную</a>
             
             <div class="error-journal">
                 <h3 class="journal-title">Журнал:</h3>
