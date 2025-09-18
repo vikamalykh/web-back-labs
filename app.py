@@ -98,8 +98,8 @@ def payment_required(err):
 </html>
 ''', 402
 
-@app.errorhandler(400)
-def bad_request(err):
+@app.route("/test/400")
+def test_400():
     return '''
 <!doctype html>
 <html>
@@ -116,8 +116,8 @@ def bad_request(err):
 </html>
 ''', 400
 
-@app.errorhandler(401)
-def unauthorized(err):
+@app.route("/test/401")
+def test_401():
     return '''
 <!doctype html>
 <html>
@@ -133,8 +133,8 @@ def unauthorized(err):
 </html>
 ''', 401
 
-@app.errorhandler(403)
-def forbidden(err):
+@app.route("/test/403")
+def test_403():
     return '''
 <!doctype html>
 <html>
@@ -150,8 +150,8 @@ def forbidden(err):
 </html>
 ''', 403
 
-@app.errorhandler(405)
-def method_not_allowed(err):
+@app.route("/test/405")
+def test_405():
     return '''
 <!doctype html>
 <html>
@@ -167,8 +167,9 @@ def method_not_allowed(err):
 </html>
 ''', 405
 
-@app.errorhandler(418)
-def im_a_teapot(err):
+
+@app.route("/test/418")
+def test_418():
     return '''
 <!doctype html>
 <html>
@@ -221,31 +222,10 @@ def test_500():
     result = 10 / 0
     return "Этот код никогда не выполнится"
 
-
-@app.route("/test/400")
-def test_400():
-    abort(400)
-
-@app.route("/test/401")
-def test_401():
-    abort(401)
-
 @app.route("/test/402")
 def test_402():
     #используем кастомное исключение
     raise PaymentRequired()
-
-@app.route("/test/403")
-def test_403():
-    abort(403)
-
-@app.route("/test/405")
-def test_405():
-    abort(405)
-
-@app.route("/test/418")
-def test_418():
-    abort(418)
 
 @app.route("/")
 @app.route("/index")
