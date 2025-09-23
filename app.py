@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, redirect, abort
+from flask import Flask, url_for, request, redirect
 import datetime
 from werkzeug.exceptions import HTTPException
 
@@ -81,8 +81,8 @@ class PaymentRequired(HTTPException):
     code = 402
     description = 'Требуется оплата'
 
-@app.errorhandler(PaymentRequired)
-def payment_required(err):
+@app.route("/test/402")
+def test_402():
     return '''
 <!doctype html>
 <html>
@@ -185,8 +185,8 @@ def test_418():
 </html>
 ''', 418
 
-@app.errorhandler(500)
-def internal_server_error(err):
+@app.route("/test/500")
+def test_500():
     css_path = url_for("static", filename="error500.css")
     return f'''
 <!doctype html>
@@ -218,14 +218,9 @@ def internal_server_error(err):
 </html>
 ''', 500
 @app.route("/test/500")
-def test_500():
+def test500():
     result = 10 / 0
-    return "Этот код никогда не выполнится"
-
-@app.route("/test/402")
-def test_402():
-    #используем кастомное исключение
-    raise PaymentRequired()
+    return "Этот код не выполнится"
 
 @app.route("/")
 @app.route("/index")
