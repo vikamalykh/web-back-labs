@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if name %}{{ name }}{% else %}Анонимус{% endif %} Лабораторная работа {{ number }}</title>
+    <title>{% if name %}Виктория Малых{% endif %} Лабораторная работа {{ number }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}">
 </head>
 <body>
@@ -17,6 +17,11 @@
         <p>3258 - 759 = {{ 3258 - 759 }}</p>
         <p>8452 / 793 = {{ 8452 / 793 }}</p>
         <p>45<sup>8</sup> = {{ 45**8 }}</p>
+        <ul>
+            {% for f in fruits %}
+            <li>{{ f }}</li>
+            {% endfor %}
+        </ul>
     </main>
 
     <footer>
