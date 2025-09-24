@@ -76,11 +76,6 @@ def not_found(err):
 </html>
 ''', 404
 
-#создаем собственное исключение для кода 402
-class PaymentRequired(HTTPException):
-    code = 402
-    description = 'Требуется оплата'
-
 @app.route("/test/402")
 def test_402():
     return '''
