@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, redirect
+from flask import Flask, url_for, request, redirect, abort
 import datetime
 from werkzeug.exceptions import HTTPException
 
@@ -401,3 +401,12 @@ def a():
 @app.route('/lab2/a/')
 def a2():
     return 'со слэшем'
+
+flower_list = ('Пион', 'Ромашка', 'Саранка', 'Незабудка')
+
+@app.route('/lab2/flowers/<int:flower_id>')
+def flowers(flower_id):
+    if flower_id >= len(flower_list):
+        abort(404)
+    else:
+        return "Цветок: " + flower_list[flower_id]
