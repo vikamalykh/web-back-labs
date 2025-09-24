@@ -180,8 +180,8 @@ def test_418():
 </html>
 ''', 418
 
-@app.route("/test/500")
-def test_500():
+@app.errorhandler(500)
+def test500_error(err):
     css_path = url_for("static", filename="error500.css")
     return f'''
 <!doctype html>
@@ -213,7 +213,7 @@ def test_500():
 </html>
 ''', 500
 @app.route("/test/500")
-def test500():
+def test_500():
     result = 10 / 0
     return "Этот код не выполнится"
 
