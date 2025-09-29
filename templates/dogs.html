@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 2{% endblock %}
+
+{% block main %}
+    <h1>Популярные породы собак</h1>
+    
+    <div class="dogs-stats">
+        <p><strong>Всего пород:</strong> {{ total_dogs }}</p>
+        <p><strong>Крупные породы:</strong> {{ large_dogs }}</p>
+        <p><strong>Средние породы:</strong> {{ medium_dogs }}</p>
+        <p><strong>Маленькие породы:</strong> {{ small_dogs }}</p>
+    </div>
+
+    <div class="dogs-grid">
+        {% for dog in dogs %}
+        <div class="dog-card">
+            <div class="dog-image">
+                <img src="{{ url_for('static', filename='dogs/' + dog.image) }}" 
+                    alt="{{ dog.name }}" >
+            </div>
+            <div class="dog-info">
+                <h3>{{ dog.name }}</h3>
+                <p class="dog-description">{{ dog.description }}</p>
+                <div class="dog-details">
+                    <span class="dog-size">Размер: {{ dog.size }}</span>
+                    <span class="dog-lifespan">Продолжительность жизни: {{ dog.lifespan }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="actions">
+        <a href="/lab2/">Назад к лабораторной 2</a>
+    </div>
+{% endblock %}

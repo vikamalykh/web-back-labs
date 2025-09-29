@@ -36,24 +36,6 @@
         </table>
     </div>
 
-    <div class="stat-summ">
-        <h3>Статистика по жанрам:</h3>
-        <ul>
-            {% set genres = {} %}
-            {% for book in books %}
-                {% if book.genre not in genres %}
-                    {% set _ = genres.update({book.genre: 1}) %}
-                {% else %}
-                    {% set _ = genres.update({book.genre: genres[book.genre] + 1}) %}
-                {% endif %}
-            {% endfor %}
-            
-            {% for genre, count in genres.items() %}
-                <li>{{ genre }}: {{ count }} книг(и)</li>
-            {% endfor %}
-        </ul>
-    </div>
-
     <div class="actions">
         <a href="/lab2/">Назад к лабораторной 2</a>
     </div>

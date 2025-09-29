@@ -419,6 +419,149 @@ books = [
     {'author': 'Марк Твен', 'title': 'Приключения Тома Сойера', 'genre': 'Проза', 'pages': 233}
 ]
 
+dogs = [
+    {
+        'name': 'Лабрадор-ретривер',
+        'image': 'labrador.jpg',
+        'description': 'Дружелюбная, активная и умная порода. Отличный компаньон для семьи.',
+        'size': 'Крупная',
+        'lifespan': '10-12 лет'
+    },
+    {
+        'name': 'Немецкая овчарка',
+        'image': 'german_shepherd.jpg',
+        'description': 'Умная, преданная и универсальная рабочая порода.',
+        'size': 'Крупная',
+        'lifespan': '9-13 лет'
+    },
+    {
+        'name': 'Золотистый ретривер',
+        'image': 'golden_retriever.jpg',
+        'description': 'Добродушная, терпеливая и очень умная порода.',
+        'size': 'Крупная',
+        'lifespan': '10-12 лет'
+    },
+    {
+        'name': 'Французский бульдог',
+        'image': 'french_bulldog.jpg',
+        'description': 'Компактная, дружелюбная и адаптивная порода.',
+        'size': 'Маленькая',
+        'lifespan': '10-12 лет'
+    },
+    {
+        'name': 'Бигль',
+        'image': 'beagle.jpg',
+        'description': 'Любопытная, веселая и отличная охотничья порода.',
+        'size': 'Средняя',
+        'lifespan': '12-15 лет'
+    },
+    {
+        'name': 'Пудель',
+        'image': 'poodle.jpg',
+        'description': 'Умная, элегантная и гипоаллергенная порода.',
+        'size': 'Разная',
+        'lifespan': '12-15 лет'
+    },
+    {
+        'name': 'Ротвейлер',
+        'image': 'rottweiler.jpg',
+        'description': 'Сильная, преданная и уверенная в себе порода.',
+        'size': 'Крупная',
+        'lifespan': '8-10 лет'
+    },
+    {
+        'name': 'Йоркширский терьер',
+        'image': 'yorkie.jpg',
+        'description': 'Маленькая, энергичная и смелая порода.',
+        'size': 'Маленькая',
+        'lifespan': '13-16 лет'
+    },
+    {
+        'name': 'Боксер',
+        'image': 'boxer.jpg',
+        'description': 'Энергичная, игривая и преданная порода.',
+        'size': 'Крупная',
+        'lifespan': '10-12 лет'
+    },
+    {
+        'name': 'Такса',
+        'image': 'dachshund.jpg',
+        'description': 'Смелая, любопытная и известная своей длинной спиной.',
+        'size': 'Маленькая',
+        'lifespan': '12-16 лет'
+    },
+    {
+        'name': 'Сибирский хаски',
+        'image': 'husky.jpg',
+        'description': 'Энергичная, дружелюбная и выносливая порода.',
+        'size': 'Крупная',
+        'lifespan': '12-14 лет'
+    },
+    {
+        'name': 'Доберман',
+        'image': 'doberman.jpg',
+        'description': 'Умная, бдительная и преданная порода.',
+        'size': 'Крупная',
+        'lifespan': '10-12 лет'
+    },
+    {
+        'name': 'Австралийская овчарка',
+        'image': 'australian_shepherd.jpg',
+        'description': 'Умная, активная и пастушья порода.',
+        'size': 'Средняя',
+        'lifespan': '13-15 лет'
+    },
+    {
+        'name': 'Ши-тцу',
+        'image': 'shih_tzu.jpg',
+        'description': 'Ласковая, дружелюбная и декоративная порода.',
+        'size': 'Маленькая',
+        'lifespan': '10-16 лет'
+    },
+    {
+        'name': 'Бостон-терьер',
+        'image': 'boston_terrier.jpg',
+        'description': 'Дружелюбная, умная и компактная порода.',
+        'size': 'Маленькая',
+        'lifespan': '11-13 лет'
+    },
+    {
+        'name': 'Вельш-корги',
+        'image': 'corgi.jpg',
+        'description': 'Умная, активная и пастушья порода с короткими лапами.',
+        'size': 'Маленькая',
+        'lifespan': '12-15 лет'
+    },
+    {
+        'name': 'Мопс',
+        'image': 'pug.jpg',
+        'description': 'Ласковая, общительная и характерная порода.',
+        'size': 'Маленькая',
+        'lifespan': '13-15 лет'
+    },
+    {
+        'name': 'Акита-ину',
+        'image': 'akita.jpg',
+        'description': 'Достойная, преданная и сильная японская порода.',
+        'size': 'Крупная',
+        'lifespan': '10-13 лет'
+    },
+    {
+        'name': 'Чихуахуа',
+        'image': 'chihuahua.jpg',
+        'description': 'Маленькая, смелая и преданная порода.',
+        'size': 'Маленькая',
+        'lifespan': '14-16 лет'
+    },
+    {
+        'name': 'Бернский зенненхунд',
+        'image': 'bernese.jpg',
+        'description': 'Спокойная, нежная и красивая швейцарская порода.',
+        'size': 'Крупная',
+        'lifespan': '7-10 лет'
+    }
+]
+
 @app.route('/lab2/flowers/<int:flower_id>')
 def flowers(flower_id):
     if flower_id < 0 or flower_id >= len(flower_list):
@@ -516,3 +659,17 @@ def books_list():
                          books=books, 
                          total_books=total_books,
                          total_pages=total_pages)
+
+@app.route('/lab2/dogs')
+def dogs_list():
+    total_dogs = len(dogs)
+    large_dogs = len([dog for dog in dogs if dog['size'] == 'Крупная'])
+    medium_dogs = len([dog for dog in dogs if dog['size'] == 'Средняя'])
+    small_dogs = len([dog for dog in dogs if dog['size'] == 'Маленькая'])
+    
+    return render_template('dogs.html', 
+                         dogs=dogs, 
+                         total_dogs=total_dogs,
+                         large_dogs=large_dogs,
+                         medium_dogs=medium_dogs,
+                         small_dogs=small_dogs)
