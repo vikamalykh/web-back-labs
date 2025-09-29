@@ -406,10 +406,13 @@ flower_list = ['Пион', 'Ромашка', 'Саранка', 'Незабудк
 
 @app.route('/lab2/flowers/<int:flower_id>')
 def flowers(flower_id):
-    if flower_id >= len(flower_list):
+    if flower_id < 0 or flower_id >= len(flower_list):
         abort(404)
     else:
-        return "Цветок: " + flower_list[flower_id]
+        return render_template('specific_flower.html', 
+                             flower=flower_list[flower_id], 
+                             flower_id=flower_id,
+                             total_flowers=len(flower_list))
 
 @app.route('/lab2/add_flower/<name>')
 def add_flower(name):
@@ -421,10 +424,28 @@ def add_flower(name):
     <h1>Добавлен новый цветок</h1>
     <p>Название нового цветка: {name}</p>
     <p>Всего цветов: {len(flower_list)}</p>
-    <p>Полный список: {flower_list}</p>
+    <p>Полный список: {', '.join(flower_list)}</p>
+    <hr>
+    <a href="/lab2/flowers">Посмотреть все цветы</a> |
+    <a href="/lab2/add_flower/Еще_цветок">Добавить еще цветок</a> |
+    <a href="/lab2/">Назад к лабораторной 2</a>
     </body>
 </html>
 '''
+
+@app.route('/lab2/flowers')
+def all_flowers():
+    return render_template('flowers.html', flowers=flower_list, count=len(flower_list))
+
+@app.route('/lab2/add_flower/')
+def add_flower_400():
+    return render_template('error_400_flower.html'), 400
+
+@app.route('/lab2/flowers/rewrite')
+def clear_flowers():
+    flower_list.clear()
+    flower_list.extend(['Пион', 'Ромашка', 'Саранка', 'Незабудка'])
+    return render_template('rewrite_flower.html')
 
 @app.route('/lab2/example')
 def example():
