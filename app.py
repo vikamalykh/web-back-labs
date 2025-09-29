@@ -404,6 +404,21 @@ def a2():
 
 flower_list = ['Пион', 'Ромашка', 'Саранка', 'Незабудка']
 
+books = [
+    {'author': 'Фёдор Достоевский', 'title': 'Преступление и наказание', 'genre': 'Роман', 'pages': 671},
+    {'author': 'Лев Толстой', 'title': 'Война и мир', 'genre': 'Роман-эпопея', 'pages': 1225},
+    {'author': 'Сатоси Ягисава', 'title': 'Дни в книжном Морисаки', 'genre': 'Роман', 'pages': 354},
+    {'author': 'Михаил Булгаков', 'title': 'Мастер и Маргарита', 'genre': 'Роман', 'pages': 480},
+    {'author': 'Эрих Мария Ремарк', 'title': 'Три товарища', 'genre': 'Роман', 'pages': 1410},
+    {'author': 'Джоан Роулинг', 'title': 'Гарри Поттер и Философский камень', 'genre': 'Фэнтези', 'pages': 309},
+    {'author': 'Иван Тургенев', 'title': 'Отцы и дети', 'genre': 'Роман', 'pages': 283},
+    {'author': 'Антуан де Сент-Экзюпери', 'title': 'Маленький принц', 'genre': 'Сказка', 'pages': 128},
+    {'author': 'Ева Меркачёва', 'title': 'Я иду искать', 'genre': 'Детектив', 'pages': 333},
+    {'author': 'Иван Гончаров', 'title': 'Обломов', 'genre': 'Роман', 'pages': 416},
+    {'author': 'Борис Бедный', 'title': 'Девчата', 'genre': 'Комедия', 'pages': 308},
+    {'author': 'Марк Твен', 'title': 'Приключения Тома Сойера', 'genre': 'Проза', 'pages': 233}
+]
+
 @app.route('/lab2/flowers/<int:flower_id>')
 def flowers(flower_id):
     if flower_id < 0 or flower_id >= len(flower_list):
@@ -491,3 +506,13 @@ def calc_default():
 @app.route('/lab2/calc/<int:a>')
 def calc_single(a):
     return redirect(f'/lab2/calc/{a}/1')
+
+@app.route('/lab2/books')
+def books_list():
+    total_books = len(books)
+    total_pages = sum(book['pages'] for book in books)
+    
+    return render_template('books.html', 
+                         books=books, 
+                         total_books=total_books,
+                         total_pages=total_pages)

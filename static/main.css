@@ -40,3 +40,43 @@ p {
     font-size: 18px;
     margin: 10px 0;
 }
+
+.books-stat {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.books-stat p {
+    margin: 5px 0;
+}
+
+.list_of_books table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.list_of_books th {
+    background-color: #293b74;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.list_of_books td {
+    padding: 10px;
+    border-bottom: 1px solid #151825;
+}
+
+.list_of_books tr:hover {
+    background-color: #f5f5f5;
+}
+
+.stat-summ {
+    background-color: #e7f3ff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
