@@ -405,6 +405,13 @@ def a2():
 
 flower_list = ['Пион', 'Ромашка', 'Саранка', 'Незабудка']
 
+flower_prices = {
+    'Пион': 300,
+    'Ромашка': 250, 
+    'Саранка': 280,
+    'Незабудка': 200
+}
+
 books = [
     {'author': 'Фёдор Достоевский', 'title': 'Преступление и наказание', 'genre': 'Роман', 'pages': 671},
     {'author': 'Лев Толстой', 'title': 'Война и мир', 'genre': 'Роман-эпопея', 'pages': 1225},
@@ -583,7 +590,14 @@ def add_flower(name):
 
 @app.route('/lab2/flowers')
 def all_flowers():
-    return render_template('flowers.html', flowers=flower_list, count=len(flower_list))
+    total = 0
+    for flower in flower_list:
+        total += flower_prices.get(flower, 300)
+    
+    return render_template('flowers.html', 
+                         flowers=flower_list,
+                         flower_prices=flower_prices,
+                         total_price=total)
 
 @app.route('/lab2/add_flower/')
 def add_flower_400():
@@ -594,6 +608,27 @@ def clear_flowers():
     flower_list.clear()
     flower_list.extend(['Пион', 'Ромашка', 'Саранка', 'Незабудка'])
     return render_template('rewrite_flower.html')
+
+@app.route('/lab2/del_flower/<int:flower_id>')
+def delete_flower(flower_id):
+    if flower_id < 0 or flower_id >= len(flower_list):
+        abort(404)
+    
+    flower_list.pop(flower_id)
+    return redirect('/lab2/flowers')
+
+@app.route('/lab2/add_flower_form', methods=['POST'])
+def add_flower_form():
+    name = request.form.get('flower_name', '').strip()
+    if name:
+        flower_list.append(name)
+        flower_prices[name] = 300
+    return redirect('/lab2/flowers')
+
+@app.route('/lab2/del_all_flowers')
+def delete_all_flowers():
+    flower_list.clear()
+    return redirect('/lab2/flowers')
 
 @app.route('/lab2/example')
 def example():

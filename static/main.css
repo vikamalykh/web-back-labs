@@ -56,6 +56,112 @@ p {
     border-color: rgb(23, 42, 58);
 }
 
+/*cтили для цветов*/
+.flowers-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.flowers-list {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.flower-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.flower-name {
+    font-weight: bold;
+}
+
+.flower-price {
+    color: #2c5f69;
+    font-weight: bold;
+}
+
+.delete-btn {
+    color: #791a23;
+    text-decoration: none;
+    padding: 4px 8px;
+    border: 1px solid #791a23;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.delete-btn:hover {
+    background: #791a23;
+    color: white;
+}
+
+.total-price {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.btn {
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-danger {
+    background: #791a23;
+    color: white;
+}
+
+.btn-secondary {
+    background: #8d9ead;
+    color: white;
+}
+
+.btn-primary {
+    background: #75b7c6;
+    color: white;
+}
+
+.add-form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 20px 0;
+}
+
+.add-form input {
+    padding: 8px 12px;
+    border: 1px solid #aeccea;
+    border-radius: 4px;
+    margin-right: 10px;
+    width: 200px;
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link a {
+    color: #6c757d;
+    text-decoration: none;
+}
+
 /*cтили для списка книг*/
 .books-stat {
     background-color: #f8f9fa;

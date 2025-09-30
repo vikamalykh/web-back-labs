@@ -1,29 +1,40 @@
 {% extends "base.html" %}
 
-{% block lab %}Лабораторная работа 2{% endblock %}
-
 {% block main %}
-    <h1>Все цветы</h1>
-    
-    <div class="flowers-info">
-        <p><strong>Общее количество цветов:</strong> {{ count }}</p>
+<div class="flowers-container">
+    <h1>Цветы</h1>
+
+    <div class="flowers-list">
+        <ol>
+            {% for flower in flowers %}
+            <li class="flower-item">
+                <span class="flower-name">{{ flower }}</span>
+                <span class="flower-price">{{ flower_prices.get(flower, 300) }} руб</span>
+                <a href="/lab2/del_flower/{{ loop.index0 }}" class="delete-btn">удалить</a>
+            </li>
+            {% endfor %}
+        </ol>
     </div>
 
-    {% if flowers %}
-        <ul class="flowers-list">
-            {% for flower in flowers %}
-                <li>
-                    <a href="/lab2/flowers/{{ loop.index0 }}">{{ flower }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Список цветов пуст</p>
-    {% endif %}
+    <div class="total-price">
+        Общая стоимость: <strong>{{ total_price }} руб</strong>
+    </div>
 
     <div class="actions">
-        <a href="/lab2/flowers/rewrite">Очистить список цветов</a> |
-        <a href="/lab2/add_flower/Новый_цветок">Добавить цветок</a> |
-        <a href="/lab2/">Назад к лабораторной 2</a>
+        <a href="/lab2/del_all_flowers" class="btn btn-danger">Удалить все цветы</a>
+        <a href="/lab2/flowers/rewrite" class="btn btn-secondary">Восстановить начальные</a>
     </div>
+
+    <div class="add-form">
+        <h3>Добавить цветок:</h3>
+        <form action="/lab2/add_flower_form" method="post">
+            <input type="text" name="flower_name" placeholder="Название цветка" required>
+            <button class="btn btn-primary">Добавить</button>
+        </form>
+    </div>
+
+    <div class="back-link">
+        <a href="/lab2/">← Назад к лабораторной 2</a>
+    </div>
+</div>
 {% endblock %}
