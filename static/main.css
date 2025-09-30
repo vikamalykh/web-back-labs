@@ -130,6 +130,7 @@ p {
 .dog-image {
     height: 270px;
     overflow: hidden;
+    border-radius: 10px;
 }
 
 .dog-image img {

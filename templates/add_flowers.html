@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 2{% endblock %}
+
+{% block main %}
+    <h1>Добавлен новый цветок</h1>
+    
+    <div class="flower-info">
+        <p><strong>Название нового цветка:</strong> {{ name }}</p>
+        <p><strong>Всего цветов:</strong> {{ count }}</p>
+        <p><strong>Полный список:</strong> {{ flower_list | join(', ') }}</p>
+    </div>
+
+    <div class="actions">
+        <a href="{{ url_for('all_flowers') }}">Посмотреть все цветы</a> |
+        <a href="{{ url_for('add_flower', name='Еще_цветок') }}">Добавить еще цветок</a> |
+        <a href="{{ url_for('lab2') }}">Назад к лабораторной 2</a>
+    </div>
+{% endblock %}

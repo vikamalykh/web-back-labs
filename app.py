@@ -576,21 +576,10 @@ def flowers(flower_id):
 @app.route('/lab2/add_flower/<name>')
 def add_flower(name):
     flower_list.append(name)
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Добавлен новый цветок</h1>
-    <p>Название нового цветка: {name}</p>
-    <p>Всего цветов: {len(flower_list)}</p>
-    <p>Полный список: {', '.join(flower_list)}</p>
-    <hr>
-    <a href="/lab2/flowers">Посмотреть все цветы</a> |
-    <a href="/lab2/add_flower/Еще_цветок">Добавить еще цветок</a> |
-    <a href="/lab2/">Назад к лабораторной 2</a>
-    </body>
-</html>
-'''
+    return render_template('add_flowers.html', 
+                         name=name, 
+                         count=len(flower_list), 
+                         flower_list=flower_list)
 
 @app.route('/lab2/flowers')
 def all_flowers():
