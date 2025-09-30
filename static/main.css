@@ -34,11 +34,16 @@ footer {
     text-align: justify;
     position: relative;
     border-radius: 8px;
+    bottom: 0;
 }
 
 p {
     font-size: 18px;
     margin: 10px 0;
+}
+
+a {
+    text-decoration: none;
 }
 
 .nav-home {
@@ -109,7 +114,8 @@ p {
 
 .actions {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 2px;
     margin: 20px 0;
 }
 
