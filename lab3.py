@@ -24,3 +24,9 @@ def del_cookie():
     resp.delete_cookie('age')
     resp.delete_cookie('name_color')
     return resp
+
+
+@lab3.route('/lab3/forml')
+def forml():
+    user = request.args.get('user')
+    return render_template('lab3/forml.html', user=user)
