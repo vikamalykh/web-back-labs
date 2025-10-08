@@ -253,7 +253,7 @@ def example():
     return render_template('example.html', name=name, number=number, group=group, course=course, fruits=fruits)
 
 @lab2.route('/lab2/')
-def lab2():
+def lab():
     return render_template('lab2.html')
 
 @lab2.route('/lab2/filters')
