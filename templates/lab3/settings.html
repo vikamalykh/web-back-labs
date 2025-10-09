@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab3.css')}}">
+{% endblock %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{# основной контент: #}
+{% block main %}
+    <h1>Cookies</h1>
+    
+    <form>
+        <div>
+            <label for="color">Выберите цвет текста:</label>
+            <input type="color" id="color" name="color" value="{{ color or '' }}">
+        </div>
+        <div>
+            <label for="bg_color">Цвет фона:</label>
+            <input type="color" id="bg_color" name="bg_color" value="{{ bg_color or '#ffffff' }}">
+        </div>
+        <div>
+            <label for="font_size">Размер шрифта:</label>
+            <input type="range" id="font_size" name="font_size" min="12" max="24" value="{{ font_size or '16' }}">
+            <span id="font_size_value">{{ font_size or '16' }}px</span>
+        </div>
+        <div>
+            <label for="text_shadow">Тень текста:</label>
+            <select id="text_shadow" name="text_shadow">
+                <option value="none" {{ 'selected' if text_shadow == 'none' }}>Без тени</option>
+                <option value="1px 1px 2px rgba(0,0,0,0.3)" {{ 'selected' if text_shadow == '1px 1px 2px rgba(0,0,0,0.3)' }}>Легкая тень</option>
+                <option value="2px 2px 4px rgba(0,0,0,0.5)" {{ 'selected' if text_shadow == '2px 2px 4px rgba(0,0,0,0.5)' }}>Средняя тень</option>
+                <option value="3px 3px 6px rgba(0,0,0,0.7)" {{ 'selected' if text_shadow == '3px 3px 6px rgba(0,0,0,0.7)' }}>Сильная тень</option>
+                <option value="0 0 10px rgba(255,0,0,0.5)" {{ 'selected' if text_shadow == '0 0 10px rgba(255,0,0,0.5)' }}>Красное свечение</option>
+                <option value="0 0 10px rgba(0,255,0,0.5)" {{ 'selected' if text_shadow == '0 0 10px rgba(0,255,0,0.5)' }}>Зеленое свечение</option>
+                <option value="0 0 10px rgba(0,0,255,0.5)" {{ 'selected' if text_shadow == '0 0 10px rgba(0,0,255,0.5)' }}>Синее свечение</option>
+            </select>
+        </div>
+        
+        <div>
+            <button type="submit">ОК</button>
+        </div>
+    </form>
+
+    <p><a href="/lab3/">Назад к лабораторной 3</a></p>
+{% endblock %}
