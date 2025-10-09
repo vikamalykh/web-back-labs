@@ -29,4 +29,6 @@ def del_cookie():
 @lab3.route('/lab3/forml')
 def forml():
     user = request.args.get('user')
-    return render_template('lab3/forml.html', user=user)
+    age = request.args.get('age')
+    sex = request.args.get('sex')
+    return render_template('lab3/forml.html', user=user, age=age, sex=sex)
