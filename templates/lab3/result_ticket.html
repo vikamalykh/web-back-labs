@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab3/lab3_ticket.css')}}">
+{% endblock %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+
+    <div class="ticket">
+        <div class="ticket-header">
+            <h1>Железнодорожный билет</h1>
+            <div class="ticket-type">{{ ticket_type }}</div>
+        </div>
+
+        <div class="ticket-info">
+            <div class="info-row">
+                <span class="label">Пассажир:</span>
+                <span class="value">{{ fio }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Возраст:</span>
+                <span class="value">{{ age }} лет</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Маршрут:</span>
+                <span class="value">{{ departure }} → {{ destination }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Дата:</span>
+                <span class="value">{{ date }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Полка:</span>
+                <span class="value">{{ shelf_name }}</span>
+            </div>
+        </div>
+
+        <div class="services">
+            <h3>Дополнительные услуги:</h3>
+            <ul>
+                {% if bedding %}
+                <li>Постельное бельё: +75 руб</li>
+                {% endif %}
+                {% if luggage %}
+                <li>Багаж: +250 руб</li>
+                {% endif %}
+                {% if insurance %}
+                <li>Страховка: +150 руб</li>
+                {% endif %}
+                {% if not bedding and not luggage and not insurance %}
+                <li>Нет дополнительных услуг</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="price">
+            <h2>Итого к оплате: {{ total_price }} руб</h2>
+        </div>
+
+        <div class="actions">
+            <a href="/lab3/ticket">Оформить новый билет</a>
+            <a href="/lab3/">Назад к лабораторной 3</a>
+        </div>
+    </div>
+{% endblock %}
