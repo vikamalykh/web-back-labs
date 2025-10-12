@@ -226,8 +226,8 @@ def author():
 
 @lab1.route("/lab1/image")
 def image():
-    css_path = url_for("static", filename="lab1.css")
-    image_path = url_for("static", filename="oak.jpg")
+    css_path = url_for("static", filename="lab1/lab1.css")
+    image_path = url_for("static", filename="lab1/oak.jpg")
     headers = {
         'Content-Language': 'ru-RU, en-US, zh-CN, es-ES',
         'X-Custom-Header-1': 'Hello-World',
@@ -250,6 +250,7 @@ def image():
 
 
 count = 0
+
 @lab1.route("/lab1/counter")
 def counter():
     global count

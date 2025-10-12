@@ -39,8 +39,15 @@
         
         <div>
             <button type="submit">ОК</button>
+            <p><a href="/lab3/settings/reset" class="button">Сбросить настройки</a></p>
         </div>
     </form>
+
+    <script>
+        document.getElementById('font_size').addEventListener('input', function() {
+            document.getElementById('font_size_value').textContent = this.value + 'px';
+        });
+    </script>
 
     <p><a href="/lab3/">Назад к лабораторной 3</a></p>
 {% endblock %}
