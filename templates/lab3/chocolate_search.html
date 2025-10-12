@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab3/lab3_chocolate.css')}}">
+{% endblock %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+    <h1>Поиск шоколада по цене</h1>
+    
+    <form action="/lab3/chocolate_results">
+        <div class="search-form">
+            <div class="price-inputs">
+                <div>
+                    <label for="min_price">Минимальная цена:</label>
+                    <input type="number" id="min_price" name="min_price" 
+                           value="{{ min_price or '' }}" 
+                           placeholder="{{ min_placeholder }}" 
+                           min="0" step="1">
+                </div>
+                
+                <div>
+                    <label for="max_price">Максимальная цена:</label>
+                    <input type="number" id="max_price" name="max_price" 
+                           value="{{ max_price or '' }}" 
+                           placeholder="{{ max_placeholder }}" 
+                           min="0" step="1">
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button type="submit" name="action" value="search">Искать</button>
+                <button type="submit" name="action" value="reset">Сброс</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="results-info">
+        {% if show_results %}
+            Найдено товаров: {{ chocolates|length }}
+        {% else %}
+            Всего товаров: {{ total_count }}
+        {% endif %}
+    </div>
+
+    {% if show_results %}
+        {% if chocolates %}
+        <div class="chocolate-grid">
+            {% for chocolate in chocolates %}
+            <div class="chocolate-card">
+                <div class="chocolate-name">{{ chocolate.name }}</div>
+                <div class="chocolate-brand">Бренд: {{ chocolate.brand }}</div>
+                <div class="chocolate-filling">Наполнение: {{ chocolate.filling }}</div>
+                <div class="chocolate-price">{{ chocolate.price }} руб</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-results">
+            Не найдено ни одного товара, измените поиск
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="chocolate-grid">
+            {% for chocolate in all_chocolates %}
+            <div class="chocolate-card">
+                <div class="chocolate-name">{{ chocolate.name }}</div>
+                <div class="chocolate-brand">Бренд: {{ chocolate.brand }}</div>
+                <div class="chocolate-filling">Наполнение: {{ chocolate.filling }}</div>
+                <div class="chocolate-price">{{ chocolate.price }} руб</div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <p><a href="/lab3/">Назад к лабораторной 3</a></p>
+{% endblock %}

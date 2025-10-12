@@ -215,3 +215,136 @@ def result_ticket():
                          date=date, shelf_name=shelf_names[shelf],
                          bedding=bedding, luggage=luggage, insurance=insurance,
                          ticket_type=ticket_type, total_price=total_price)
+
+
+CHOCOLATES = [
+    {"name": "Alpen Gold Молочный", "price": 80, "filling": "Молочный", "brand": "Alpen Gold"},
+    {"name": "Alpen Gold Ореховый", "price": 85, "filling": "С лесным орехом", "brand": "Alpen Gold"},
+    {"name": "Alpen Gold Клубника", "price": 90, "filling": "С клубникой", "brand": "Alpen Gold"},
+    {"name": "Milka Молочный", "price": 120, "filling": "Молочный", "brand": "Milka"},
+    {"name": "Milka С фундуком", "price": 130, "filling": "С фундуком", "brand": "Milka"},
+    {"name": "Milka С клубникой", "price": 135, "filling": "С клубникой", "brand": "Milka"},
+    {"name": "Milka С печеньем", "price": 140, "filling": "С печеньем", "brand": "Milka"},
+    {"name": "Ritter Sport Молочный", "price": 150, "filling": "Молочный", "brand": "Ritter Sport"},
+    {"name": "Ritter Sport Марципан", "price": 160, "filling": "С марципаном", "brand": "Ritter Sport"},
+    {"name": "Ritter Sport Йогурт", "price": 155, "filling": "С йогуртом", "brand": "Ritter Sport"},
+    {"name": "Lindt Excellence 70%", "price": 250, "filling": "Горький 70%", "brand": "Lindt"},
+    {"name": "Lindt Excellence 85%", "price": 270, "filling": "Горький 85%", "brand": "Lindt"},
+    {"name": "Lindt Молочный", "price": 220, "filling": "Молочный", "brand": "Lindt"},
+    {"name": "Бабаевский Горький", "price": 110, "filling": "Горький", "brand": "Бабаевский"},
+    {"name": "Бабаевский Элитный", "price": 130, "filling": "Горький 75%", "brand": "Бабаевский"},
+    {"name": "Россия Щедрая душа", "price": 70, "filling": "Молочный", "brand": "Россия"},
+    {"name": "Россия Горький", "price": 75, "filling": "Горький", "brand": "Россия"},
+    {"name": "Красный Октябрь Аленка", "price": 95, "filling": "Молочный", "brand": "Аленка"},
+    {"name": "Ferrero Rocher", "price": 450, "filling": "С фундуком", "brand": "Ferrero"},
+    {"name": "Raffaello", "price": 420, "filling": "Кокосовый", "brand": "Ferrero"},
+    {"name": "Twix", "price": 60, "filling": "Карамельный", "brand": "Mars"},
+    {"name": "Snickers", "price": 65, "filling": "Арахисовый", "brand": "Mars"},
+    {"name": "Bounty", "price": 70, "filling": "Кокосовый", "brand": "Mars"},
+    {"name": "KitKat", "price": 55, "filling": "Вафельный", "brand": "Nestle"}
+]
+
+@lab3.route('/lab3/chocolate')
+def chocolate_search():
+    # Получаем цены из куки
+    min_price_cookie = request.cookies.get('min_price', '')
+    max_price_cookie = request.cookies.get('max_price', '')
+    
+    # Рассчитываем минимальную и максимальную цены для плейсхолдеров
+    all_prices = [choco['price'] for choco in CHOCOLATES]
+    min_placeholder = min(all_prices)
+    max_placeholder = max(all_prices)
+    
+    show_results = False
+    chocolates = []
+    
+    # Если есть куки с ценами, показываем отфильтрованные товары
+    if min_price_cookie or max_price_cookie:
+        show_results = True
+        chocolates = filter_chocolates(min_price_cookie, max_price_cookie)
+    
+    return render_template('lab3/chocolate_search.html',
+                         min_price=min_price_cookie,
+                         max_price=max_price_cookie,
+                         min_placeholder=min_placeholder,
+                         max_placeholder=max_placeholder,
+                         chocolates=chocolates,
+                         show_results=show_results,
+                         all_chocolates=CHOCOLATES,
+                         total_count=len(CHOCOLATES))
+
+@lab3.route('/lab3/chocolate_results')
+def chocolate_results():
+    action = request.args.get('action', 'search')
+    
+    if action == 'reset':
+        # Сбрасываем куки и показываем все товары
+        resp = make_response(redirect('/lab3/chocolate'))
+        resp.delete_cookie('min_price')
+        resp.delete_cookie('max_price')
+        return resp
+    
+    # Получаем цены из формы
+    min_price = request.args.get('min_price', '')
+    max_price = request.args.get('max_price', '')
+    
+    # Фильтруем товары
+    chocolates = filter_chocolates(min_price, max_price)
+    
+    # Рассчитываем минимальную и максимальную цены для плейсхолдеров
+    all_prices = [choco['price'] for choco in CHOCOLATES]
+    min_placeholder = min(all_prices)
+    max_placeholder = max(all_prices)
+    
+    # Сохраняем в куки и показываем результаты
+    resp = make_response(render_template('lab3/chocolate_search.html',
+                                       min_price=min_price,
+                                       max_price=max_price,
+                                       min_placeholder=min_placeholder,
+                                       max_placeholder=max_placeholder,
+                                       chocolates=chocolates,
+                                       show_results=True,
+                                       all_chocolates=CHOCOLATES,
+                                       total_count=len(CHOCOLATES)))
+    
+    # Сохраняем цены в куки
+    if min_price:
+        resp.set_cookie('min_price', min_price)
+    if max_price:
+        resp.set_cookie('max_price', max_price)
+    
+    return resp
+
+def filter_chocolates(min_price_str, max_price_str):
+    """Фильтрует шоколадки по цене"""
+    filtered_chocolates = CHOCOLATES.copy()
+    
+    # Обрабатываем минимальную цену
+    if min_price_str:
+        try:
+            min_price = float(min_price_str)
+            filtered_chocolates = [choco for choco in filtered_chocolates if choco['price'] >= min_price]
+        except ValueError:
+            pass
+    
+    # Обрабатываем максимальную цену
+    if max_price_str:
+        try:
+            max_price = float(max_price_str)
+            filtered_chocolates = [choco for choco in filtered_chocolates if choco['price'] <= max_price]
+        except ValueError:
+            pass
+    
+    # Если пользователь перепутал мин и макс, меняем местами
+    if min_price_str and max_price_str:
+        try:
+            min_price = float(min_price_str)
+            max_price = float(max_price_str)
+            if min_price > max_price:
+                # Меняем местами и фильтруем заново
+                filtered_chocolates = [choco for choco in CHOCOLATES 
+                                     if max_price <= choco['price'] <= min_price]
+        except ValueError:
+            pass
+    
+    return filtered_chocolates

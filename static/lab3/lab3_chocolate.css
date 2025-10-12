@@ -1,0 +1,148 @@
+.search-form {
+    background: linear-gradient(135deg, #f8f4f0 0%, #ede0d4 100%);
+    padding: 20px;
+    border: 2px solid #8B4513;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px rgba(139, 69, 19, 0.2);
+}
+
+.price-inputs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.price-inputs > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.price-inputs label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #5D4037;
+    font-size: 14px;
+}
+
+.price-inputs input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #A1887F;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    color: #5D4037;
+    box-sizing: border-box; 
+}
+
+.price-inputs input:focus {
+    outline: none;
+    border-color: #8B4513;
+}
+
+.actions {
+    text-align: center;
+}
+
+.actions button {
+    background: #8B4513;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 8px;
+    transition: opacity 0.2s;
+}
+
+.actions button:hover {
+    opacity: 0.9;
+}
+
+.actions button[name="action"][value="reset"] {
+    background: #795548;
+}
+
+.results-info {
+    background: #D7CCC8;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+    color: #5D4037;
+    border: 1px solid #BCAAA4;
+}
+
+.no-results {
+    background: #FFCDD2;
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    color: #C62828;
+    border: 1px solid #EF5350;
+    margin: 15px 0;
+}
+
+.chocolate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.chocolate-card {
+    background: #FFF8E1;
+    padding: 15px;
+    border: 2px solid #8B4513;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(139, 69, 19, 0.15);
+}
+
+.chocolate-card:hover {
+    border-color: #D2691E;
+}
+
+.chocolate-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #5D4037;
+    margin-bottom: 8px;
+}
+
+.chocolate-brand {
+    color: #795548;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.chocolate-filling {
+    color: #795548;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.chocolate-price {
+    font-weight: bold;
+    color: #8B4513;
+    font-size: 18px;
+    text-align: right;
+    margin-top: 8px;
+}
+
+body {
+    background-color: #FAFAFA;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #5D4037;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
