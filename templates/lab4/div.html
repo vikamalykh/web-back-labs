@@ -1,18 +1,24 @@
 {% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab4/arif.css')}}">
+{% endblock %}
 
 {# номер лабораторной работы: #}
 {% block lab %}Деление чисел{% endblock %}
 
 {# основной контент: #}
 {% block main %}
+<div class="arif-container">
+    <h1 class="arif-title">Деление чисел</h1>
+    
     {% if error %}
-        <div style="color: red; margin-top: 10px;">{{ error }}</div>
+        <div class="arif-error">{{ error }}</div>
     {% else %}
-    <br>
-    <h1>Деление чисел</h1>
-    {{ x1 }} / {{ x2 }} = {{ result }}
+        <div class="arif-result">
+            {{ x1 }} / {{ x2 }} = {{ result }}
+        </div>
     {% endif %}
     
-    <br><br>
-    <a href="{{ url_for('lab4.div_form') }}">Вернуться к форме деления</a>
+    <a href="{{ url_for('lab4.div_form') }}" class="arif-link">Вернуться к форме деления</a>
+</div>
 {% endblock %}

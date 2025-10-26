@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab4/arif.css')}}">
+{% endblock %}
+
+
+{% block lab %}Вычитание чисел{% endblock %}
+
+
+{% block main %}
+<div class="arif-container">
+    <h1 class="arif-title">Вычитание чисел</h1>
+    
+    {% if error %}
+        <div class="arif-error">{{ error }}</div>
+    {% else %}
+        <div class="arif-result">
+            {{ x1 }} - {{ x2 }} = {{ result }}
+        </div>
+    {% endif %}
+    
+    <a href="{{ url_for('lab4.sub_form') }}" class="arif-link">Вернуться к вычитанию</a>
+</div>
+{% endblock %}

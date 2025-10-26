@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab4/arif.css')}}">
+{% endblock %}
+
+{% block lab %}Умножение чисел{% endblock %}
+
+
+{% block main %}
+<div class="arif-container">
+    <h1 class="arif-title">Умножение чисел</h1>
+    
+    <form method="post" action="/lab4/mul" class="arif-form">
+        <div style="text-align: center;">
+            <input type="number" name="x1" class="arif-input" placeholder="1">
+            <span class="arif-operator">×</span>
+            <input type="number" name="x2" class="arif-input" placeholder="1">
+            <input type="submit" value="=" class="arif-button">
+        </div>
+    </form>
+    
+    <div style="text-align: center; color: #666; font-size: 0.9em; margin-top: 10px;">
+        Пустые поля считаются как 1
+    </div>
+</div>
+{% endblock %}

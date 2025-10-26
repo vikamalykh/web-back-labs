@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab4/arif.css')}}">
+{% endblock %}
+
+{% block lab %}Возведение в степень{% endblock %}
+
+
+{% block main %}
+<div class="arif-container">
+    <h1 class="arif-title">Возведение в степень</h1>
+    
+    <form method="post" action="/lab4/pow" class="arif-form">
+        <div style="text-align: center;">
+            <input type="number" name="x1" class="arif-input" placeholder="Основание">
+            <span class="arif-operator">^</span>
+            <input type="number" name="x2" class="arif-input"  placeholder="Степень">
+            <input type="submit" value="=" class="arif-button">
+        </div>
+    </form>
+</div>
+{% endblock %}

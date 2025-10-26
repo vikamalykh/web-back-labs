@@ -3,18 +3,17 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='lab4/arif.css')}}">
 {% endblock %}
 
-{# номер лабораторной работы: #}
-{% block lab %}Деление чисел{% endblock %}
+{% block lab %}Вычитание чисел{% endblock %}
 
-{# основной контент: #}
+
 {% block main %}
 <div class="arif-container">
-    <h1 class="arif-title">Деление чисел</h1>
+    <h1 class="arif-title">Вычитание чисел</h1>
     
-    <form method="post" action="/lab4/div" class="arif-form">
+    <form method="post" action="/lab4/sub" class="arif-form">
         <div style="text-align: center;">
             <input type="number" name="x1" class="arif-input">
-            <span class="arif-operator">/</span>
+            <span class="arif-operator">-</span>
             <input type="number" name="x2" class="arif-input">
             <input type="submit" value="=" class="arif-button">
         </div>

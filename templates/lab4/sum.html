@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab4/arif.css')}}">
+{% endblock %}
+
+{% block lab %}Суммирование чисел{% endblock %}
+
+
+{% block main %}
+<div class="arif-container">
+    <h1 class="arif-title">Суммирование чисел</h1>
+    
+    <div class="arif-result">
+        {{ x1 }} + {{ x2 }} = {{ result }}
+    </div>
+    
+    <a href="{{ url_for('lab4.sum_form') }}" class="arif-link">Вернуться к суммированию</a>
+</div>
+{% endblock %}

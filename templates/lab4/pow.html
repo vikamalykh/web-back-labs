@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab4/arif.css')}}">
+{% endblock %}
+
+{% block lab %}Возведение в степень{% endblock %}
+
+
+{% block main %}
+<div class="arif-container">
+    <h1 class="arif-title">Возведение в степень</h1>
+    
+    {% if error %}
+        <div class="arif-error">{{ error }}</div>
+    {% else %}
+        <div class="arif-result">
+            {{ x1 }}<sup>{{ x2 }}</sup> = {{ result }}
+        </div>
+    {% endif %}
+    
+    <a href="{{ url_for('lab4.pow_form') }}" class="arif-link">Вернуться к возведению в степень</a>
+</div>
+{% endblock %}
