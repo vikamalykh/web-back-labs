@@ -1,4 +1,3 @@
-/* Минималистичная версия */
 body {
     font-family: Arial, sans-serif;
     background: #f0f2f5;
@@ -25,14 +24,30 @@ form div {
 label {
     display: block;
     margin-bottom: 5px;
+    font-weight: bold;
 }
 
-input {
+input[type="text"],
+input[type="password"] {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+.gender-options {
+    margin-top: 10px;
+}
+
+.gender-options div {
+    margin-bottom: 8px;
+}
+
+.gender-options label {
+    display: inline;
+    font-weight: normal;
+    margin-left: 5px;
 }
 
 button {
@@ -51,6 +66,19 @@ button[type="submit"] {
 button[type="reset"] {
     background: #6c757d;
     color: white;
+}
+
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
 }
 
 div:has(> [style*="color: red"]) {

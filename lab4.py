@@ -119,37 +119,99 @@ def tree():
 
 
 users = [
-    {'login': 'alex', 'password': '123'},
-    {'login': 'bob', 'password': '555'},
-    {'login': 'vika', 'password': '1705'},
-    {'login': 'oxana', 'password': '2706'},
-    {'login': 'jeck', 'password': '3007'},
+    {'login': 'alex', 'password': '123', 'name': 'Александр Петров', 'gender': 'male'},
+    {'login': 'bob', 'password': '555', 'name': 'Роберт Джонсон', 'gender': 'male'},
+    {'login': 'vika', 'password': '1705', 'name': 'Виктория Малых', 'gender': 'female'},
+    {'login': 'oxana', 'password': '2706', 'name': 'Оксана Копылова', 'gender': 'female'},
+    {'login': 'jeck', 'password': '3007', 'name': 'Евгений Малых', 'gender': 'male'},
 ]
 
-@lab4.route('/lab4/login', methods = ['GET', 'POST'])
+@lab4.route('/lab4/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        if 'login' in  session:
+        if 'login' in session:
             authorized = True
-            login = session['login']
+            user_name = ''
+            for user in users:
+                if user['login'] == session['login']:
+                    user_name = user['name']
+                    break
+            return render_template("lab4/login.html", authorized=authorized, login=user_name)
         else:
             authorized = False
-            login = ''
-        return render_template("lab4/login.html", authorized=authorized, login=login)
+            return render_template("lab4/login.html", authorized=authorized, login='')
     
-    login = request.form.get('login')
+    login_input = request.form.get('login')
     password = request.form.get('password')
+    gender = request.form.get('gender')
 
+    if not login_input:
+        error = "Не введён логин"
+        return render_template('lab4/login.html', error=error, authorized=False, login_value="")
+    
+    if not password:
+        error = "Не введён пароль" 
+        return render_template('lab4/login.html', error=error, authorized=False, login_value=login_input)
+    
+    if not gender:
+        error = "Не выбран пол"
+        return render_template('lab4/login.html', error=error, authorized=False, login_value=login_input, gender_value="")
+    
     for user in users:
-        if login == user['login'] and password == user['password']:
-            session['login'] = login
+        if login_input == user['login'] and password == user['password'] and gender == user['gender']:
+            session['login'] = user['login']
             return redirect('/lab4/login')
     
-    error = "Неверный логин и/или пароль"
-    return render_template('lab4/login.html', error=error, authorized=False)
+    error = "Неверный логин и/или пароль/пол. Проверьте всё!"
+    return render_template('lab4/login.html', error=error, authorized=False, login_value=login_input, gender_value=gender)
 
-
-@lab4.route('/lab4/logout', methods = ['POST'])
+@lab4.route('/lab4/logout', methods=['POST'])
 def logout():
     session.pop('login', None)
     return redirect('/lab4/login')
+
+
+@lab4.route('/lab4/fridge', methods=['GET', 'POST'])
+def fridge():
+    if request.method == 'GET':
+        error = session.pop('error', None)
+        temperature = session.pop('temperature', None)
+        snowflakes = session.pop('snowflakes', 0)
+        message = session.pop('message', None)
+        
+        return render_template("lab4/fridge.html", 
+                             error=error,
+                             temperature=temperature,
+                             snowflakes=snowflakes,
+                             message=message)
+    
+    temp_input = request.form.get('temperature')
+
+    if not temp_input:
+        session['error'] = "Ошибка: не задана температура"
+        return redirect('/lab4/fridge')
+    
+    try:
+        temperature = int(temp_input)
+    except ValueError:
+        session['error'] = "Ошибка: температура должна быть числом"
+        return redirect('/lab4/fridge')
+
+    if temperature < -12:
+        session['error'] = "Не удалось установить температуру — слишком низкое значение"
+    elif temperature > -1:
+        session['error'] = "Не удалось установить температуру — слишком высокое значение"
+    elif -12 <= temperature <= -9:
+        session['message'] = f"Установлена температура: {temperature}°C"
+        session['snowflakes'] = 3
+        session['temperature'] = temperature
+    elif -8 <= temperature <= -5:
+        session['message'] = f"Установлена температура: {temperature}°C"
+        session['snowflakes'] = 2
+        session['temperature'] = temperature
+    elif -4 <= temperature <= -1:
+        session['message'] = f"Установлена температура: {temperature}°C"
+        session['snowflakes'] = 1
+        session['temperature'] = temperature
+    
+    return redirect('/lab4/fridge')

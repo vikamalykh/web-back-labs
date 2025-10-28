@@ -1,0 +1,166 @@
+.main {
+    max-width: 450px;
+    margin: 30px auto;
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 100, 200, 0.1);
+    border: 1px solid #e1f5fe;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 28px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: #3498db;
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 30px;
+    font-weight: normal;
+}
+
+form div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #b3e5fc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #29b6f6;
+    outline: none;
+    box-shadow: 0 0 5px rgba(41, 182, 246, 0.3);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+button[type="submit"] {
+    background: #2980b9;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background: #3498db;
+    transform: translateY(-2px);
+}
+
+button[type="reset"] {
+    background: #95a5a6;
+    color: white;
+}
+
+button[type="reset"]:hover {
+    background: #7f8c8d;
+    transform: translateY(-2px);
+}
+
+/* Стиль для ошибок */
+.error-message {
+    color: #c0392b;
+    background-color: #ffeaa7;
+    border: 2px solid #fab1a0;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Стиль для успешных сообщений */
+.success-message {
+    color: #27ae60;
+    background-color: #d5f4e6;
+    border: 2px solid #82e0aa;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Стиль для снежинок */
+.snowflakes {
+    margin-top: 15px;
+}
+
+.snowflake {
+    font-size: 28px;
+    color: #3498db;
+    margin: 0 8px;
+    text-shadow: 1px 1px 2px rgba(52, 152, 219, 0.3);
+    animation: float 3s ease-in-out infinite;
+}
+
+.snowflake:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.snowflake:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Стиль для ссылки "Главная" */
+.back-link {
+    color: #3498db;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 25px;
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #3498db;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.back-link:hover {
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+}
+
+.link-container {
+    text-align: center;
+    margin-top: 20px;
+}
