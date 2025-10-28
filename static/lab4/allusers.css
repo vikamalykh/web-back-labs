@@ -1,0 +1,246 @@
+/* Единый стиль для страниц управления пользователями */
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+}
+
+.main {
+    max-width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.gender-options {
+    margin-top: 10px;
+}
+
+.gender-options div {
+    margin-bottom: 8px;
+    padding: 8px;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+}
+
+.gender-options label {
+    display: inline;
+    font-weight: normal;
+    margin-left: 8px;
+    color: #555;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+button[type="submit"] {
+    background: #007bff;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background: #0056b3;
+}
+
+button[type="reset"] {
+    background: #6c757d;
+    color: white;
+}
+
+button[type="reset"]:hover {
+    background: #545b62;
+}
+
+.auth-button {
+    padding: 12px 24px;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.auth-button:hover {
+    background: #218838;
+    color: white;
+    text-decoration: none;
+}
+
+/* Стиль для ошибок */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
+}
+
+/* Стиль для успешных сообщений */
+.success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Стиль для списка пользователей */
+.users-list {
+    margin: 20px 0;
+}
+
+.user-card {
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #f9f9f9;
+}
+
+.current-user {
+    background: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.gender-badge {
+    font-size: 16px;
+}
+
+.you-badge {
+    background: #2196f3;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.user-actions {
+    margin: 25px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edit-btn {
+    background: #ff9800;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.edit-btn:hover {
+    background: #f57c00;
+}
+
+.delete-btn {
+    background: #f44336;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.delete-btn:hover {
+    background: #d32f2f;
+}
+
+/* Стиль для ссылок */
+.back-link {
+    color: #007bff;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.back-link:hover {
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+}
+
+.link-container {
+    text-align: center;
+    margin-top: 25px;
+}

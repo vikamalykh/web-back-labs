@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab4/allusers.css')}}">
+{% endblock %}
+
+{% block lab %}Лабораторная работа 4{% endblock %}
+
+{% block main %}
+    <h1>Список пользователей</h1>
+    
+    <div>
+        {% for user in users %}
+        <div style="padding: 10px; border: 1px solid #ccc; margin: 5px 0;">
+            <strong>{{ user.name }}</strong> ({{ user.login }})
+            {% if user.login == session.login %}
+            <span style="color: blue;"> - это вы</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <form action="/lab4/users/edit" method="get" style="display: inline;">
+            <button type="submit">Редактировать мои данные</button>
+        </form>
+        
+        <form action="/lab4/users/delete" method="post" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите удалить свой аккаунт?')">
+            <button type="submit">Удалить мой аккаунт</button>
+        </form>
+    </div>
+    
+    <p><a href="/lab4/">Назад к лабораторной 4</a></p>
+{% endblock %}
