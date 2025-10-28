@@ -1,0 +1,162 @@
+/* Стиль для заказа зерна */
+.main {
+    max-width: 500px;
+    margin: 30px auto;
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(139, 195, 74, 0.1);
+    border: 1px solid #e8f5e8;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fff9 100%);
+}
+
+h1 {
+    color: #2e7d32;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+h2 {
+    color: #4caf50;
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 30px;
+    font-weight: normal;
+}
+
+form div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2e7d32;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.grain-options {
+    margin-top: 10px;
+}
+
+.grain-options div {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #c8e6c9;
+    border-radius: 6px;
+    background: #f1f8e9;
+}
+
+.grain-options label {
+    display: inline;
+    font-weight: normal;
+    margin-left: 8px;
+    color: #33691e;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #a5d6a7;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #4caf50;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+button[type="submit"] {
+    background: #4caf50;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background: #66bb6a;
+    transform: translateY(-2px);
+}
+
+button[type="reset"] {
+    background: #78909c;
+    color: white;
+}
+
+button[type="reset"]:hover {
+    background: #90a4ae;
+    transform: translateY(-2px);
+}
+
+/* Стиль для ошибок */
+.error-message {
+    color: #c62828;
+    background-color: #ffebee;
+    border: 2px solid #ef9a9a;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Стиль для успешных сообщений */
+.success-message {
+    color: #1b5e20;
+    background-color: #e8f5e8;
+    border: 2px solid #a5d6a7;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+/* Стиль для ссылки "Назад" */
+.back-link {
+    color: #4caf50;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 25px;
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #4caf50;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.back-link:hover {
+    background: #4caf50;
+    color: white;
+    text-decoration: none;
+}
+
+.link-container {
+    text-align: center;
+    margin-top: 20px;
+}
