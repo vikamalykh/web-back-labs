@@ -23,11 +23,11 @@
             <label>Пол:</label>
             <div>
                 <input type="radio" id="male" name="gender" value="male" {% if user.gender == 'male' %}checked{% endif %} required>
-                <label for="male">Мужской</label>
+                <label for="male" style="display: inline; margin-left: 5px;">Мужской</label>
             </div>
             <div>
                 <input type="radio" id="female" name="gender" value="female" {% if user.gender == 'female' %}checked{% endif %} required>
-                <label for="female">Женский</label>
+                <label for="female" style="display: inline; margin-left: 5px;">Женский</label>
             </div>
         </div>
         

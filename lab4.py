@@ -139,39 +139,53 @@ def login():
                     break
             return render_template("lab4/login.html", authorized=authorized, login=user_name)
         else:
+            #есть ли сообщения в сессии
+            error = session.pop('error', None)
+            login_value = session.pop('login_value', '')
+            gender_value = session.pop('gender_value', '')
+            
             authorized = False
-            return render_template("lab4/login.html", authorized=authorized, login='')
-    
+            return render_template("lab4/login.html", authorized=authorized, login='', 
+                                 error=error, login_value=login_value, gender_value=gender_value)
+
     login_input = request.form.get('login')
     password = request.form.get('password')
     gender = request.form.get('gender')
 
     if not login_input:
-        error = "Не введён логин"
-        return render_template('lab4/login.html', error=error, authorized=False, login_value="")
+        session['error'] = "Не введён логин"
+        session['login_value'] = ""
+        return redirect('/lab4/login')
     
     if not password:
-        error = "Не введён пароль" 
-        return render_template('lab4/login.html', error=error, authorized=False, login_value=login_input)
+        session['error'] = "Не введён пароль"
+        session['login_value'] = login_input
+        return redirect('/lab4/login')
     
     if not gender:
-        error = "Не выбран пол"
-        return render_template('lab4/login.html', error=error, authorized=False, login_value=login_input, gender_value="")
+        session['error'] = "Не выбран пол"
+        session['login_value'] = login_input
+        session['gender_value'] = ""
+        return redirect('/lab4/login')
     
     for user in users:
         if login_input == user['login'] and password == user['password'] and gender == user['gender']:
             session['login'] = user['login']
             return redirect('/lab4/login')
     
-    error = "Неверный логин и/или пароль/пол. Проверьте всё!"
-    return render_template('lab4/login.html', error=error, authorized=False, login_value=login_input, gender_value=gender)
+    session['error'] = "Неверный логин и/или пароль/пол. Проверьте всё!"
+    session['login_value'] = login_input
+    session['gender_value'] = gender
+    return redirect('/lab4/login')
 
 
 @lab4.route('/lab4/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
-        return render_template("lab4/register.html")
-    
+        error = session.pop('error', None)
+        success = session.pop('success', None)
+        return render_template("lab4/register.html", error=error, success=success)
+
     login = request.form.get('login')
     password = request.form.get('password')
     password_confirm = request.form.get('password_confirm')
@@ -179,17 +193,17 @@ def register():
     gender = request.form.get('gender')
 
     if not login or not password or not password_confirm or not name or not gender:
-        error = "Все поля обязательны для заполнения"
-        return render_template('lab4/register.html', error=error)
+        session['error'] = "Все поля обязательны для заполнения"
+        return redirect('/lab4/register')
     
     if password != password_confirm:
-        error = "Пароли не совпадают"
-        return render_template('lab4/register.html', error=error)
+        session['error'] = "Пароли не совпадают"
+        return redirect('/lab4/register')
 
     for user in users:
         if user['login'] == login:
-            error = "Пользователь с таким логином уже существует"
-            return render_template('lab4/register.html', error=error)
+            session['error'] = "Пользователь с таким логином уже существует"
+            return redirect('/lab4/register')
 
     new_user = {
         'login': login,
@@ -199,8 +213,8 @@ def register():
     }
     users.append(new_user)
     
-    success = "Регистрация прошла успешно! Теперь вы можете войти."
-    return render_template('lab4/register.html', success=success)
+    session['success'] = "Регистрация прошла успешно! Теперь вы можете войти."
+    return redirect('/lab4/register')
 
 @lab4.route('/lab4/users')
 def users_list():
