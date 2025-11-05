@@ -1,0 +1,56 @@
+/* static/lab5/menu.css */
+
+.lab5-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.lab5-title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.lab5-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.lab5-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.lab5-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.lab5-btn {
+    padding: 8px 16px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.lab5-btn:hover {
+    background: #e0e0e0;
+}
+
+.lab5-user {
+    font-weight: bold;
+    color: #333;
+}
