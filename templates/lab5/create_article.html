@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab5/create.css')}}">
+{% endblock %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+    <h1>Создание статьи</h1>
+
+    <form method="post">
+        <div>
+            <label>
+                Название статьи:
+                <input type="text" maxlength="50" name="title">
+            </label>
+        </div>
+
+        <div>
+            <textarea name="article_text"></textarea>
+        </div>
+
+        <div>
+            <button type="submit">Готово</button>
+        </div>
+    </form>
+    <div style="margin-top: 20px;">
+        <a href="/lab5/" class="lab5-btn">Меню лабораторной</a>
+    </div>
+{% endblock %}
