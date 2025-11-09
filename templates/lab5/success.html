@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab5/register.css')}}">
+{% endblock %}
 
 {% block lab %}Лабораторная работа 5{% endblock %}
 
@@ -13,7 +16,7 @@
     
     <div style="margin-top: 20px;">
         <a href="/lab5/login" class="lab5-btn">Войти</a>
-        <a href="/lab5/" class="lab5-btn">На главную</a>
+        <a href="/lab5/" class="lab5-btn">Меню лабораторной</a>
     </div>
 </div>
 {% endblock %}
