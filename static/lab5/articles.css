@@ -1,0 +1,60 @@
+/* articles.css - простые стили для списка статей */
+.lab5-main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+h2 {
+    color: #2c3e50;
+    margin: 25px 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #3498db;
+    font-size: 22px;
+}
+
+blockquote {
+    background: #f8f9fa;
+    border-left: 4px solid #3498db;
+    margin: 0 0 30px 0;
+    padding: 15px 20px;
+    font-style: normal;
+    line-height: 1.6;
+    color: #555;
+    border-radius: 0 4px 4px 0;
+}
+
+.lab5-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.lab5-btn:hover {
+    background-color: #0056b3;
+}
+
+div[style*="margin-top"] {
+    text-align: left;
+    margin-top: 20px;
+}
+
+/* Стиль для случая, когда статей нет */
+.no-articles {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+    margin: 50px 0;
+    font-size: 18px;
+}

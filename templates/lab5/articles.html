@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab5/articles.css')}}">
+{% endblock %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+    <h1>Статьи</h1>
+
+    {% for article in articles %}
+        <h2>{{ article['title'] }}</h2>
+        <blockquote>{{ article['article_text'] }}</blockquote>
+    {% endfor %}
+    <div style="margin-top: 20px;">
+        <a href="/lab5/" class="lab5-btn">Меню лабораторной</a>
+    </div>
+{% endblock %}
