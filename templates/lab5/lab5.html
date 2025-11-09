@@ -22,7 +22,13 @@
             <a href="/lab5/login" class="lab5-btn">Войти</a>
             <a href="/lab5/register" class="lab5-btn">Регистрация</a>
         </div>
-        <div class="lab5-user">Anonymous</div>
+        <div class="lab5-user">
+            {% if login %}
+                {{ login }}
+            {% else %}
+                Anonymous
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

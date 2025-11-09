@@ -1,0 +1,144 @@
+/* login.css - простые стили для входа */
+.lab5-main {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.lab5-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.lab5-header {
+    font-size: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.lab5-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.lab5-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.lab5-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.lab5-btn:hover {
+    background-color: #0056b3;
+}
+
+.lab5-user {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стили для форм */
+form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    max-width: 400px;
+    margin: 0 auto 20px auto;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    text-align: left; /* Текст по левому краю */
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+form input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.error {
+    background-color: #ffe6e6;
+    color: #d00;
+    padding: 10px;
+    border: 1px solid #f00;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Стили для страницы успеха */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+a {
+    display: inline-block;
+    padding: 50px 50px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+a:hover {
+    background-color: #0056b3;
+}
+
+/* Контейнер для центрирования ссылок */
+.lab5-links {
+    text-align: center;
+    margin-top: 20px;
+}

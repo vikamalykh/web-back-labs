@@ -18,6 +18,7 @@
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #ddd;
+    margin-bottom: 20px;
 }
 
 .form-group {
@@ -55,7 +56,6 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    margin-right: 10px;
 }
 
 .lab5-btn:hover {
@@ -83,4 +83,10 @@
 
 .success-message p {
     margin: 10px 0;
+}
+
+.lab5-links {
+    text-align: left;
+    margin-top: 20px;
+    padding-left: 0;
 }
