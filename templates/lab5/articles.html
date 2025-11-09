@@ -8,10 +8,23 @@
 {% block main %}
     <h1>Статьи</h1>
 
-    {% for article in articles %}
-        <h2>{{ article['title'] }}</h2>
-        <blockquote>{{ article['article_text'] }}</blockquote>
-    {% endfor %}
+    {% if articles %}
+        {% for article in articles %}
+            <div class="article-item">
+                <h2>{{ article['title'] }}</h2>
+                <blockquote>{{ article['article_text'] }}</blockquote>
+                <div class="article-actions">
+                    <a href="/lab5/edit/{{ article['id'] }}" class="lab5-btn edit-btn">Редактировать</a>
+                    <a href="/lab5/delete/{{ article['id'] }}" class="lab5-btn delete-btn" onclick="return confirm('Удалить статью?')">Удалить</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-articles">
+            У вас пока нет статей:-\<a href="/lab5/create">Создайте свою первую статью!</a>
+        </div>
+    {% endif %}
+    
     <div style="margin-top: 20px;">
         <a href="/lab5/" class="lab5-btn">Меню лабораторной</a>
     </div>
