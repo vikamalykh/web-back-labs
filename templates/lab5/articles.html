@@ -6,12 +6,18 @@
 {% block lab %}Лабораторная работа 5{% endblock %}
 
 {% block main %}
-    <h1>Статьи</h1>
+    <h1>Мои статьи</h1>
 
     {% if articles %}
         {% for article in articles %}
-            <div class="article-item">
+            <div class="article-item {% if article['is_favorite'] %}favorite{% endif %}">
                 <h2>{{ article['title'] }}</h2>
+                {% if article['is_favorite'] %}
+                    <div class="favorite-badge">★Избранная</div>
+                {% endif %}
+                {% if article['is_public'] %}
+                    <div class="public-badge">Публичная</div>
+                {% endif %}
                 <blockquote>{{ article['article_text'] }}</blockquote>
                 <div class="article-actions">
                     <a href="/lab5/edit/{{ article['id'] }}" class="lab5-btn edit-btn">Редактировать</a>
@@ -21,7 +27,7 @@
         {% endfor %}
     {% else %}
         <div class="no-articles">
-            У вас пока нет статей:-\<a href="/lab5/create">Создайте свою первую статью!</a>
+            У вас пока нет статей. <a href="/lab5/create">Создайте первую статью!</a>
         </div>
     {% endif %}
     

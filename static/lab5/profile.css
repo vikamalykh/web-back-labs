@@ -1,23 +1,28 @@
 .lab5-main {
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
 }
 
-.lab5-title {
-    font-size: 24px;
-    font-weight: bold;
+h1 {
     text-align: center;
-    margin-bottom: 30px;
     color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
 }
 
-.lab5-form {
+h3 {
+    color: #333;
+    margin: 25px 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #3498db;
+}
+
+.profile-form {
     background: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #ddd;
-    margin-bottom: 20px;
 }
 
 .form-group {
@@ -45,6 +50,34 @@
     outline: none;
 }
 
+.form-group input:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+}
+
+.checkbox-group {
+    margin-bottom: 15px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+}
+
+small {
+    display: block;
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
 .lab5-btn {
     display: inline-block;
     padding: 10px 20px;
@@ -61,6 +94,10 @@
     background-color: #0056b3;
 }
 
+button.lab5-btn {
+    width: auto;
+}
+
 .error {
     background-color: #ffe6e6;
     color: #d00;
@@ -70,22 +107,16 @@
     margin-bottom: 20px;
 }
 
-.success-message {
+.success {
     background-color: #e6ffe6;
     color: #008000;
-    padding: 20px;
+    padding: 10px;
     border: 1px solid #008000;
     border-radius: 4px;
-    text-align: center;
     margin-bottom: 20px;
 }
 
-.success-message p {
-    margin: 10px 0;
-}
-
-.lab5-links {
+div[style*="margin-top"] {
     text-align: left;
     margin-top: 20px;
-    padding-left: 0;
 }
