@@ -55,15 +55,15 @@ function getOfficeList() {
                     actionsDiv.appendChild(bookingButton);
                 } else {
                     const login = '{{ session.get("login", "") }}';
-                    if (office.tenant === login) {
                         const cancelButton = document.createElement('button');
                         cancelButton.className = 'office-button cancel-button';
                         cancelButton.innerText = 'Освободить';
                         cancelButton.onclick = function() { cancellation(office.number); };
                         actionsDiv.appendChild(cancelButton);
 
-                        totalCost += office.price;
-                    }
+                        if (office.tenant === login) {
+                            totalCost += office.price;
+                        }
                 }
 
                 ul.appendChild(li);
