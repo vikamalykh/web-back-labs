@@ -1,0 +1,150 @@
+/* Основные стили для страницы аренды офисов - светлая тема */
+.office-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.office-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2em;
+    font-weight: 300;
+}
+
+.office-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.office-item {
+    background: #fff;
+    margin: 10px 0;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.2s ease;
+}
+
+.office-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.office-info {
+    flex-grow: 1;
+}
+
+.office-number {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.office-status {
+    color: #666;
+    font-size: 0.95em;
+    margin-bottom: 5px;
+}
+
+.office-price {
+    font-weight: bold;
+    color: #2c5aa0;
+    font-size: 1em;
+}
+
+.office-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.office-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.9em;
+}
+
+.book-button {
+    background: #2c5aa0;
+    color: white;
+}
+
+.book-button:hover {
+    background: #1e3d6f;
+}
+
+.cancel-button {
+    background: #d32f2f;
+    color: white;
+}
+
+.cancel-button:hover {
+    background: #b71c1c;
+}
+
+.total-cost {
+    background: #f8f9fa;
+    color: #333;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.1em;
+    font-weight: 500;
+    border: 1px solid #e0e0e0;
+}
+
+.empty-message {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin: 30px 0;
+    font-size: 1.1em;
+}
+
+/* Простая анимация появления */
+.office-item {
+    animation: fadeIn 0.3s ease;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .office-container {
+        padding: 15px;
+    }
+    
+    .office-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .office-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .office-title {
+        font-size: 1.6em;
+    }
+}

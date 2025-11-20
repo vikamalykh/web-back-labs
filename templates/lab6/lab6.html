@@ -3,6 +3,10 @@
 {# номер лабораторной работы: #}
 {% block lab %}Лабораторная работа 6{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lab6/arenda.css')}}">
+{% endblock %}
+
 {% block script %}
 <script>
 function getOfficeList() {
@@ -30,21 +34,33 @@ function getOfficeList() {
             for(let i = 0; i < office_list.length; i++) {
                 const office = office_list[i];
                 const li = document.createElement('li');
-                li.innerHTML = `Кабинет ${office.number}: ${office.tenant || 'Свободен'} - ${office.price} руб./мес.`;
+                li.className = 'office-item';
+            
+                li.innerHTML = `
+                    <div class="office-info">
+                        <div class="office-number">Кабинет №${office.number}</div>
+                        <div class="office-status">${office.tenant ? 'Арендован: ' + office.tenant : 'Свободен'}</div>
+                        <div class="office-price">${office.price} руб./мес.</div>
+                    </div>
+                    <div class="office-actions"></div>
+                `;
 
+                const actionsDiv = li.querySelector('.office-actions');
+                
                 if (!office.tenant) {
                     const bookingButton = document.createElement('button');
-                    bookingButton.innerText = 'Зарезервировать';
+                    bookingButton.className = 'office-button book-button';
+                    bookingButton.innerText = 'Забронировать';
                     bookingButton.onclick = function() { booking(office.number); };
-                    li.appendChild(bookingButton);
+                    actionsDiv.appendChild(bookingButton);
                 } else {
                     const login = '{{ session.get("login", "") }}';
-                    if (office.tenant) {
+                    if (office.tenant === login) {
                         const cancelButton = document.createElement('button');
+                        cancelButton.className = 'office-button cancel-button';
                         cancelButton.innerText = 'Освободить';
                         cancelButton.onclick = function() { cancellation(office.number); };
-                        
-                        li.appendChild(cancelButton);
+                        actionsDiv.appendChild(cancelButton);
 
                         totalCost += office.price;
                     }
@@ -148,7 +164,9 @@ function cancellation(officeNumber) {
 
 {# основной контент: #}
 {% block main %}
-    <h1>Список кабинетов</h1>
-    <ul id="office-list"></ul>
-    <div id="total-cost" style="margin-top: 20px; font-size: 18px;"></div>
+    <div class="office-container">
+        <h1 class="office-title">Аренда офисов</h1>
+        <ul class="office-list" id="office-list"></ul>
+        <div id="total-cost" class="total-cost"></div>
+    </div>
 {% endblock %}
