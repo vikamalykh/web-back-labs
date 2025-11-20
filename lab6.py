@@ -1,16 +1,66 @@
-from flask import Blueprint, url_for, request, render_template, make_response, redirect, session
+from flask import Blueprint, url_for, request, render_template, make_response, redirect, session, current_app
+from werkzeug.security import check_password_hash, generate_password_hash
+import sqlite3
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import os
+from os import path
+
 lab6 = Blueprint('lab6', __name__)
 
+def db_connect():
+    if current_app.config['DB_TYPE'] == 'postgres':
+        conn = psycopg2.connect(
+            host='127.0.0.1',
+            database='viktoriya_malykh_knowledge_base',
+            user='viktoriya_malykh_knowledge_base',
+            password='1234567'
+        )
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+    else:
+        dir_path = path.dirname(path.realpath(__file__))
+        db_path = path.join(dir_path, "database.db")
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+    
+    return conn, cur
 
-offices = []
-for i in range(1, 11):
-    offices.append({"number": i, "tenant": "", "price": 900 + i * 100})
+def db_close(conn, cur):
+    conn.commit()
+    cur.close()
+    conn.close()
 
+def get_offices_from_db():
+    """Получаем офисы из БД"""
+    conn, cur = db_connect()
+    offices = []
+    
+    cur.execute("SELECT number, tenant, price FROM offices ORDER BY number")
+    for row in cur.fetchall():
+        offices.append({
+            'number': row['number'],
+            'tenant': row['tenant'] if row['tenant'] else '',
+            'price': row['price']
+        })
+    
+    db_close(conn, cur)
+    return offices
+
+def update_office_in_db(office_number, tenant):
+    """Обновляем арендатора офиса в БД"""
+    conn, cur = db_connect()
+    
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("UPDATE offices SET tenant = %s WHERE number = %s", (tenant, office_number))
+    else:
+        cur.execute("UPDATE offices SET tenant = ? WHERE number = ?", (tenant, office_number))
+    
+    db_close(conn, cur)
 
 @lab6.route('/lab6/')
 def main():
     return render_template('lab6/lab6.html')
-
 
 @lab6.route('/lab6/json-rpc-api/', methods=['POST'])
 def api():
@@ -18,6 +68,7 @@ def api():
     id = data['id']
     
     if data['method'] == 'info':
+        offices = get_offices_from_db()  # Берем из БД
         return {
             'jsonrpc': '2.0',
             'result': offices,
@@ -29,16 +80,18 @@ def api():
         return {
             'jsonrpc': '2.0',
             'error': {
-            'code': 1,
-            'message': 'Unauthorized'
-        },
-        'id': id
+                'code': 1,
+                'message': 'Unauthorized'
+            },
+            'id': id
         }
     
     if data['method'] == 'booking':
-        offices_number = data['params']
+        office_number = data['params']
+        offices = get_offices_from_db()  # Берем из БД
+        
         for office in offices:
-            if office['number'] == offices_number:
+            if office['number'] == office_number:
                 if office['tenant'] != '':
                     return {
                         'jsonrpc': '2.0',
@@ -49,17 +102,30 @@ def api():
                         'id': id
                     }
                 
-                office['tenant'] = login
+                # Обновляем в БД
+                update_office_in_db(office_number, login)
                 return {
                     'jsonrpc': '2.0',
                     'result': 'success',
                     'id': id
                 }
-            
+        
+        # Если офис не найден
+        return {
+            'jsonrpc': '2.0',
+            'error': {
+                'code': 5,
+                'message': 'Office not found'
+            },
+            'id': id
+        }
+    
     if data['method'] == 'cancellation':
-        offices_number = data['params']
+        office_number = data['params']
+        offices = get_offices_from_db()  # Берем из БД
+        
         for office in offices:
-            if office['number'] == offices_number:
+            if office['number'] == office_number:
                 if not office['tenant']:
                     return {
                         'jsonrpc': '2.0',
@@ -79,12 +145,23 @@ def api():
                         'id': id
                     }
                 
-                office['tenant'] = ""
+                # Освобождаем в БД
+                update_office_in_db(office_number, "")
                 return {
                     'jsonrpc': '2.0',
                     'result': 'success',
                     'id': id
                 }
+        
+        # Если офис не найден
+        return {
+            'jsonrpc': '2.0',
+            'error': {
+                'code': 5,
+                'message': 'Office not found'
+            },
+            'id': id
+        }
     
     return {
         'jsonrpc':'2.0',
