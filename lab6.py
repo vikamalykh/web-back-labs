@@ -32,7 +32,6 @@ def db_close(conn, cur):
     conn.close()
 
 def get_offices_from_db():
-    """Получаем офисы из БД"""
     conn, cur = db_connect()
     offices = []
     
@@ -48,7 +47,6 @@ def get_offices_from_db():
     return offices
 
 def update_office_in_db(office_number, tenant):
-    """Обновляем арендатора офиса в БД"""
     conn, cur = db_connect()
     
     if current_app.config['DB_TYPE'] == 'postgres':
@@ -68,7 +66,7 @@ def api():
     id = data['id']
     
     if data['method'] == 'info':
-        offices = get_offices_from_db()  # Берем из БД
+        offices = get_offices_from_db()
         return {
             'jsonrpc': '2.0',
             'result': offices,
@@ -88,7 +86,7 @@ def api():
     
     if data['method'] == 'booking':
         office_number = data['params']
-        offices = get_offices_from_db()  # Берем из БД
+        offices = get_offices_from_db()
         
         for office in offices:
             if office['number'] == office_number:
@@ -102,7 +100,6 @@ def api():
                         'id': id
                     }
                 
-                # Обновляем в БД
                 update_office_in_db(office_number, login)
                 return {
                     'jsonrpc': '2.0',
@@ -110,7 +107,6 @@ def api():
                     'id': id
                 }
         
-        # Если офис не найден
         return {
             'jsonrpc': '2.0',
             'error': {
@@ -122,7 +118,7 @@ def api():
     
     if data['method'] == 'cancellation':
         office_number = data['params']
-        offices = get_offices_from_db()  # Берем из БД
+        offices = get_offices_from_db()
         
         for office in offices:
             if office['number'] == office_number:
@@ -145,7 +141,6 @@ def api():
                         'id': id
                     }
                 
-                # Освобождаем в БД
                 update_office_in_db(office_number, "")
                 return {
                     'jsonrpc': '2.0',
@@ -153,7 +148,6 @@ def api():
                     'id': id
                 }
         
-        # Если офис не найден
         return {
             'jsonrpc': '2.0',
             'error': {
