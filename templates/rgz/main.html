@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block lab %}Онлайн-магазин мебели{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='rgz/rgz.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="store-container">
+    <h1 class="store-title">Магазин мебели</h1>
+    
+    <div class="furniture-grid">
+        {% for item in furniture_items %}
+        <div class="furniture-card">
+            <div class="furniture-image-placeholder">
+                <span>Фото мебели</span>
+            </div>
+            <div class="furniture-info">
+                <h3 class="furniture-name">{{ item.name }}</h3>
+                <p class="furniture-description">{{ item.description }}</p>
+                <div class="furniture-price">{{ item.price }} руб.</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
