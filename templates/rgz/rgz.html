@@ -6,6 +6,92 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='rgz/rgz.css') }}">
 {% endblock %}
 
+{% block script %}
+<script>
+    let currentFurniture = [];
+
+    async function callApi(method, params = {}) {
+        const response = await fetch('/rgz/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: method,
+                params: params,
+                id: Math.floor(Math.random() * 1000)
+            })
+        });
+        
+        return await response.json();
+    }
+
+    async function loadFurniture() {
+        try {
+            const result = await callApi('get_furniture');
+            if (result.result) {
+                currentFurniture = result.result;
+                renderFurniture(currentFurniture);
+            } else if (result.error) {
+                alert('Ошибка загрузки товаров: ' + result.error.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Ошибка загрузки товаров');
+        }
+    }
+
+    function renderFurniture(furniture) {
+        const grid = document.querySelector('.furniture-grid');
+        grid.innerHTML = '';
+
+        furniture.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'furniture-card';
+            
+            card.innerHTML = `
+                <h3>${item.name}</h3>
+                <p class="description">${item.description}</p>
+                ${item.image ? `<img src="/static/${item.image}" alt="${item.name}" class="furniture-image" onerror="this.style.display='none'">` : ''}
+                <div class="price">${parseFloat(item.price).toLocaleString('ru-RU')} руб.</div>
+                ${'{{ login }}' ? `
+                    <button class="add-to-cart-btn" onclick="addToCart(${item.id})">
+                        Добавить в корзину
+                    </button>
+                ` : `
+                    <button class="add-to-cart-btn" disabled title="Для добавления в корзину необходимо авторизоваться">
+                        Войдите для покупок
+                    </button>
+                `}
+            `;
+            
+            grid.appendChild(card);
+        });
+    }
+
+    async function addToCart(furnitureId) {
+        try {
+            const result = await callApi('add_to_cart', { furniture_id: furnitureId });
+            
+            if (result.result) {
+                alert('Товар добавлен в корзину!');
+            } else if (result.error) {
+                alert('Ошибка: ' + result.error.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Ошибка добавления в корзину');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadFurniture();
+    });
+</script>
+{% endblock %}
+
+
 {% block main %}
     <div class="rgz-container">
         <div class="rgz-header">
