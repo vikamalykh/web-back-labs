@@ -1,13 +1,11 @@
-/* Основные стили для магазина мебели */
 .rgz-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* Шапка */
 .rgz-header {
-    background: #2c3e50;
+    background: #5584b3;
     color: white;
     padding: 15px 0;
     margin-bottom: 20px;
@@ -21,7 +19,6 @@
     font-weight: 300;
 }
 
-/* Панель пользователя */
 .user-panel {
     background: #f8f9fa;
     padding: 12px 15px;
@@ -72,7 +69,6 @@
     opacity: 0.9;
 }
 
-/* Сетка товаров */
 .furniture-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -129,7 +125,6 @@
     border: 1px solid #e1e1e1;
 }
 
-/* Кнопки */
 .add-to-cart-btn {
     width: 100%;
     padding: 10px;
@@ -151,7 +146,6 @@
     cursor: not-allowed;
 }
 
-/* Формы */
 .auth-form {
     max-width: 400px;
     margin: 20px auto;
@@ -212,7 +206,6 @@
     background: #34495e;
 }
 
-/* Сообщения */
 .error-message {
     background: #fee;
     color: #c33;
@@ -239,7 +232,6 @@
     font-size: 1.3em;
 }
 
-/* Ссылки */
 .auth-links {
     text-align: center;
     margin-top: 15px;
@@ -255,7 +247,6 @@
     text-decoration: underline;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
     .rgz-container {
         padding: 10px;
@@ -275,4 +266,122 @@
     .user-actions a {
         margin: 3px;
     }
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    background: #7f8c8d;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.back-btn:hover {
+    background: #95a5a6;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.empty-cart h2 {
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.cart-items {
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #e1e1e1;
+}
+
+.item-info h3 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+}
+
+.item-price {
+    color: #666;
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.item-total {
+    color: #27ae60;
+    font-weight: 500;
+    margin: 5px 0 0 0;
+}
+
+.remove-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.remove-btn:hover {
+    background: #c0392b;
+}
+
+.cart-summary {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #e1e1e1;
+    text-align: center;
+}
+
+.total-amount {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.checkout-btn {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 3px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.checkout-btn:hover {
+    background: #219a52;
+}
+
+.checkout-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
 }

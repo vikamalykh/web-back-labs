@@ -1,9 +1,8 @@
-from flask import Blueprint, url_for, request, render_template, make_response, redirect, session, current_app
+from flask import Blueprint, url_for, request, render_template, make_response, redirect, session, current_app, jsonify
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
-import os
 from os import path
 
 rgz = Blueprint('rgz', __name__)
@@ -35,14 +34,17 @@ def db_close(conn, cur):
 def main():
     conn, cur = db_connect()
 
-    cur.execute("SELECT * FROM rgz_furniture")
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT * FROM rgz_furniture")
+    else:
+        cur.execute("SELECT * FROM rgz_furniture")
+    
     furniture = cur.fetchall()
     
     db_close(conn, cur)
     
     login = session.get('login')
     return render_template('rgz/rgz.html', furniture=furniture, login=login)
-
 
 @rgz.route('/rgz/register', methods=['GET', 'POST'])
 def register():
@@ -57,14 +59,23 @@ def register():
     
     conn, cur = db_connect()
     
-    cur.execute("SELECT * FROM rgz_users WHERE login=%s", (login,))
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT * FROM rgz_users WHERE login=%s", (login,))
+    else:
+        cur.execute("SELECT * FROM rgz_users WHERE login=?", (login,))
+    
     if cur.fetchone():
         db_close(conn, cur)
         return render_template('rgz/register.html', error='Пользователь уже существует')
 
     password_hash = generate_password_hash(password)
-    cur.execute("INSERT INTO rgz_users (login, password) VALUES (%s, %s)", 
-                (login, password_hash))
+    
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("INSERT INTO rgz_users (login, password) VALUES (%s, %s)", 
+                    (login, password_hash))
+    else:
+        cur.execute("INSERT INTO rgz_users (login, password) VALUES (?, ?)", 
+                    (login, password_hash))
     
     db_close(conn, cur)
     return render_template('rgz/register_success.html', login=login)
@@ -82,7 +93,11 @@ def login():
     
     conn, cur = db_connect()
     
-    cur.execute("SELECT * FROM rgz_users WHERE login=%s", (login,))
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT * FROM rgz_users WHERE login=%s", (login,))
+    else:
+        cur.execute("SELECT * FROM rgz_users WHERE login=?", (login,))
+    
     user = cur.fetchone()
     
     if not user or not check_password_hash(user['password'], password):
@@ -101,3 +116,7 @@ def logout():
     session.pop('login', None)
     session.pop('user_id', None)
     return redirect('/rgz/')
+
+@rgz.route('/rgz/cart')
+def cart():
+    return render_template('rgz/cart.html')
