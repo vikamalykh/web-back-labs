@@ -44,3 +44,37 @@ def main():
     db_close(conn, cur)
     
     return render_template('rgz/main.html', furniture_items=furniture_items)
+
+
+@rgz.route('/rgz/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('rgz/register.html')
+    
+    login = request.form.get('login')
+    password = request.form.get('password')
+    
+    if not (login or password):
+        return render_template('rgz/register.html', error='Заполните все поля')
+    
+    conn, cur = db_connect()
+    
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT login FROM rgz_users WHERE login=%s;", (login,))
+    else:
+        cur.execute("SELECT login FROM rgz_users WHERE login=?;", (login,))
+    
+    if cur.fetchone():
+        db_close(conn, cur)
+        return render_template('rgz/register.html', error='Такой пользователь уже существует')
+
+    password_hash = generate_password_hash(password)
+    
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("INSERT INTO rgz_users (login, password) VALUES (%s, %s);", (login, password_hash))
+    else:
+        cur.execute("INSERT INTO rgz_users (login, password) VALUES (?, ?);", (login, password_hash))
+    
+    db_close(conn, cur)
+    
+    return render_template('rgz/success.html', login=login)

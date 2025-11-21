@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block lab %}Онлайн-магазин мебели{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='rgz/style.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="auth-container">
+    <h1 class="auth-title">Регистрация</h1>
+    
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+    
+    <form method="post" class="auth-form">
+        <div class="form-group">
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        
+        <button type="submit" class="auth-button">Зарегистрироваться</button>
+    </form>
+</div>
+{% endblock %}
