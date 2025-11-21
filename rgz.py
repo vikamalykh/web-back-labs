@@ -336,3 +336,79 @@ def remove_from_cart(params, request_id):
     finally:
         db_close(conn, cur)
 
+def create_order(params, request_id):
+    """Создание заказа из корзины"""
+    login = session.get('login')
+    user_id = session.get('user_id')
+    
+    if not login:
+        return json_rpc_response(None, {"code": 1, "message": "Необходима авторизация"}, request_id)
+    
+    conn, cur = db_connect()
+    
+    try:
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("""
+                SELECT c.*, f.name, f.price 
+                FROM rgz_cart c 
+                JOIN rgz_furniture f ON c.furniture_id = f.id 
+                WHERE c.user_id = %s
+            """, (user_id,))
+        else:
+            cur.execute("""
+                SELECT c.*, f.name, f.price 
+                FROM rgz_cart c 
+                JOIN rgz_furniture f ON c.furniture_id = f.id 
+                WHERE c.user_id = ?
+            """, (user_id,))
+        
+        cart_items = cur.fetchall()
+        
+        if not cart_items:
+            return json_rpc_response(None, {"code": 4, "message": "Корзина пуста"}, request_id)
+
+        total_amount = 0
+        for item in cart_items:
+            total_amount += float(item['price']) * item['quantity']
+
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("""
+                INSERT INTO rgz_orders (user_id, total_amount) 
+                VALUES (%s, %s) 
+                RETURNING id
+            """, (user_id, total_amount))
+
+            order_result = cur.fetchone()
+            if not order_result:
+                return json_rpc_response(None, {"code": 5, "message": "Не удалось создать заказ"}, request_id)
+            order_id = order_result['id']
+        else:
+            cur.execute("INSERT INTO rgz_orders (user_id, total_amount) VALUES (?, ?)", 
+                       (user_id, total_amount))
+            order_id = cur.lastrowid
+
+        for item in cart_items:
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("""
+                    INSERT INTO rgz_order_items (order_id, furniture_id, quantity, price) 
+                    VALUES (%s, %s, %s, %s)
+                """, (order_id, item['furniture_id'], item['quantity'], item['price']))
+            else:
+                cur.execute("""
+                    INSERT INTO rgz_order_items (order_id, furniture_id, quantity, price) 
+                    VALUES (?, ?, ?, ?)
+                """, (order_id, item['furniture_id'], item['quantity'], item['price']))
+
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("DELETE FROM rgz_cart WHERE user_id = %s", (user_id,))
+        else:
+            cur.execute("DELETE FROM rgz_cart WHERE user_id = ?", (user_id,))
+        
+        return json_rpc_response({
+            "order_id": order_id,
+            "total_amount": total_amount
+        }, None, request_id)
+    except Exception as e:
+        return json_rpc_response(None, {"code": -32000, "message": str(e)}, request_id)
+    finally:
+        db_close(conn, cur)
