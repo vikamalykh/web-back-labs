@@ -2,42 +2,71 @@
 
 {% block lab %}Онлайн-магазин мебели{% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='rgz/rgz.css') }}">
+{% endblock %}
+
 {% block main %}
-    <h1>Каталог мебели</h1>
+    <div class="rgz-container">
+        <div class="rgz-header">
+            <h1>Магазин мебели</h1>
+        </div>
 
-    <div>
-        {% if login %}
-            <span>Пользователь: {{ login }}</span>
-            <a href="/rgz/logout">Выйти</a>
-            <a href="/rgz/cart">Корзина</a>
-        {% else %}
-            <a href="/rgz/login">Войти</a>
-            <a href="/rgz/register">Регистрация</a>
-        {% endif %}
-    </div>
+        <div class="user-panel">
+            {% if login %}
+                <div class="user-info">
+                    Пользователь: {{ login }}
+                </div>
+                <div class="user-actions">
+                    <a href="/rgz/cart" class="cart-btn">Корзина</a>
+                    <a href="/rgz/logout" class="logout-btn">Выйти</a>
+                </div>
+            {% else %}
+                <div class="user-info">
+                    Для покупок необходимо авторизоваться
+                </div>
+                <div class="user-actions">
+                    <a href="/rgz/login" class="login-btn">Войти</a>
+                    <a href="/rgz/register" class="register-btn">Регистрация</a>
+                </div>
+            {% endif %}
+        </div>
 
-    <div class="furniture-list">
-        {% for item in furniture %}
-            <div class="furniture-item">
-                <h3>{{ item['name'] }}</h3>
-                <p>{{ item['description'] }}</p>
-                <p class="price">Цена: {{ item['price'] }} руб.</p>
-                {% if item['image'] %}
-                    <img src="{{ url_for('static', filename=item['image']) }}" alt="{{ item['name'] }}" style="max-width: 200px;">
-                {% endif %}
-                {% if login %}
-                    <button onclick="addToCart({{ item['id'] }})">Добавить в корзину</button>
-                {% endif %}
-            </div>
-        {% endfor %}
+        <div class="furniture-grid">
+            {% for item in furniture %}
+                <div class="furniture-card">
+                    <h3>{{ item['name'] }}</h3>
+                    <p class="description">{{ item['description'] }}</p>
+                    
+                    {% if item['image'] %}
+                        <img src="{{ url_for('static', filename=item['image']) }}" 
+                             alt="{{ item['name'] }}" 
+                             class="furniture-image"
+                             onerror="this.style.display='none'">
+                    {% endif %}
+                    
+                    <div class="price">{{ item['price'] }} руб.</div>
+                    
+                    {% if login %}
+                        <button class="add-to-cart-btn" onclick="addToCart({{ item['id'] }})">
+                            Добавить в корзину
+                        </button>
+                    {% else %}
+                        <button class="add-to-cart-btn" disabled title="Для добавления в корзину необходимо авторизоваться">
+                            Войдите для покупок
+                        </button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 
 {% block script %}
 <script>
     function addToCart(furnitureId) {
-        // Позже добавим функцию добавления в корзину
         alert('Товар добавлен в корзину! ID: ' + furnitureId);
+        //реальное добавление в корзину
     }
 </script>
 {% endblock %}

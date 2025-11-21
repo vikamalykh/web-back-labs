@@ -34,8 +34,7 @@ def db_close(conn, cur):
 @rgz.route('/rgz/')
 def main():
     conn, cur = db_connect()
-    
-    # Получаем все товары
+
     cur.execute("SELECT * FROM rgz_furniture")
     furniture = cur.fetchall()
     
@@ -58,13 +57,11 @@ def register():
     
     conn, cur = db_connect()
     
-    # Проверяем, нет ли уже такого пользователя
     cur.execute("SELECT * FROM rgz_users WHERE login=%s", (login,))
     if cur.fetchone():
         db_close(conn, cur)
         return render_template('rgz/register.html', error='Пользователь уже существует')
-    
-    # Хешируем пароль и сохраняем пользователя
+
     password_hash = generate_password_hash(password)
     cur.execute("INSERT INTO rgz_users (login, password) VALUES (%s, %s)", 
                 (login, password_hash))
@@ -93,8 +90,7 @@ def login():
         return render_template('rgz/login.html', error='Неверный логин или пароль')
     
     db_close(conn, cur)
-    
-    # Сохраняем пользователя в сессии
+
     session['login'] = login
     session['user_id'] = user['id']
     
