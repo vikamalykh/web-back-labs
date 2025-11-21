@@ -1,19 +1,53 @@
+/* Основные стили контейнеров */
 .store-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.success-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* Заголовки */
 .store-title {
     text-align: center;
     color: #2c3e50;
     margin-bottom: 30px;
 }
 
+.auth-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.success-title {
+    color: #27ae60;
+    margin-bottom: 20px;
+}
+
+/* Сетка товаров */
 .furniture-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px;
+    margin-top: 20px;
 }
 
 .furniture-card {
@@ -22,6 +56,12 @@
     padding: 20px;
     background-color: white;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.furniture-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
 }
 
 .furniture-image-placeholder {
@@ -35,6 +75,20 @@
     color: white;
     font-weight: bold;
     margin-bottom: 15px;
+    position: relative;
+}
+
+.furniture-image-placeholder:before {
+    content: "🛋️";
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.furniture-image-placeholder span {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.9em;
+    opacity: 0.9;
 }
 
 .furniture-info {
@@ -44,34 +98,62 @@
 .furniture-name {
     color: #2c3e50;
     margin-bottom: 10px;
+    font-size: 1.3em;
+    font-weight: 600;
 }
 
 .furniture-description {
     color: #7f8c8d;
     margin-bottom: 15px;
+    font-size: 0.95em;
+    line-height: 1.4;
 }
 
 .furniture-price {
     font-weight: bold;
     color: #e74c3c;
     font-size: 1.2em;
+    margin-bottom: 15px;
 }
 
-.auth-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.auth-title {
-    text-align: center;
-    color: #2c3e50;
+/* Блок пользователя */
+.user-info {
     margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
 }
 
+.welcome-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Ссылки авторизации */
+.auth-links {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.login-link, .register-link, .logout-link, .cart-link {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.login-link:hover, .register-link:hover, .logout-link:hover, .cart-link:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Формы */
 .auth-form {
     margin-bottom: 20px;
 }
@@ -93,6 +175,12 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #3498db;
+    outline: none;
 }
 
 .auth-button {
@@ -104,12 +192,44 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 1.1em;
+    transition: background-color 0.3s;
 }
 
 .auth-button:hover {
     background-color: #2980b9;
 }
 
+/* Кнопки товаров */
+.add-to-cart-btn {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #219a52;
+    transform: translateY(-2px);
+}
+
+.login-required {
+    color: #7f8c8d;
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 10px;
+    background-color: #ecf0f1;
+    border-radius: 4px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Сообщения */
 .error-message {
     background-color: #e74c3c;
     color: white;
@@ -117,21 +237,6 @@
     border-radius: 4px;
     margin-bottom: 20px;
     text-align: center;
-}
-
-.success-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-.success-title {
-    color: #27ae60;
-    margin-bottom: 20px;
 }
 
 .back-link {
@@ -142,4 +247,65 @@
     color: white;
     text-decoration: none;
     border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.back-link:hover {
+    background-color: #2980b9;
+}
+
+/* Ссылки в формах */
+.auth-container .auth-links {
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.auth-container .auth-links a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.auth-container .auth-links a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .store-container {
+        padding: 10px;
+    }
+    
+    .furniture-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+    }
+    
+    .welcome-message {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .auth-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .login-link, .register-link, .logout-link, .cart-link {
+        text-align: center;
+    }
+}
+
+/* Сообщение об успешной регистрации */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
 }

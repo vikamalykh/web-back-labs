@@ -8,7 +8,7 @@
 
 {% block main %}
 <div class="auth-container">
-    <h1 class="auth-title">Регистрация</h1>
+    <h1 class="auth-title">Вход</h1>
     
     {% if error %}
     <div class="error-message">{{ error }}</div>
@@ -25,7 +25,11 @@
             <input type="password" id="password" name="password" required>
         </div>
         
-        <button type="submit" class="auth-button">Зарегистрироваться</button>
+        <button type="submit" class="auth-button">Войти</button>
     </form>
+    
+    <div class="auth-links">
+        <a href="{{ url_for('rgz.register') }}">Нет аккаунта? Зарегистрироваться</a>
+    </div>
 </div>
 {% endblock %}
