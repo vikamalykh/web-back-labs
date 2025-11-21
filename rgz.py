@@ -35,17 +35,14 @@ def db_close(conn, cur):
 def main():
     conn, cur = db_connect()
     
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT * FROM rgz_furniture ORDER BY id")
-    else:
-        cur.execute("SELECT * FROM rgz_furniture ORDER BY id")
+    # Получаем все товары
+    cur.execute("SELECT * FROM rgz_furniture")
+    furniture = cur.fetchall()
     
-    furniture_items = cur.fetchall()
     db_close(conn, cur)
     
-    registered = request.args.get('registered')
-    
-    return render_template('rgz/main.html', furniture_items=furniture_items, registered=registered)
+    login = session.get('login')
+    return render_template('rgz/rgz.html', furniture=furniture, login=login)
 
 
 @rgz.route('/rgz/register', methods=['GET', 'POST'])
@@ -56,39 +53,24 @@ def register():
     login = request.form.get('login')
     password = request.form.get('password')
     
-    if not (login or password):
+    if not (login and password):
         return render_template('rgz/register.html', error='Заполните все поля')
     
     conn, cur = db_connect()
     
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT login FROM rgz_users WHERE login=%s;", (login,))
-    else:
-        cur.execute("SELECT login FROM rgz_users WHERE login=?;", (login,))
-    
+    # Проверяем, нет ли уже такого пользователя
+    cur.execute("SELECT * FROM rgz_users WHERE login=%s", (login,))
     if cur.fetchone():
         db_close(conn, cur)
-        return render_template('rgz/register.html', error='Такой пользователь уже существует')
-
+        return render_template('rgz/register.html', error='Пользователь уже существует')
+    
+    # Хешируем пароль и сохраняем пользователя
     password_hash = generate_password_hash(password)
+    cur.execute("INSERT INTO rgz_users (login, password) VALUES (%s, %s)", 
+                (login, password_hash))
     
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("INSERT INTO rgz_users (login, password) VALUES (%s, %s);", (login, password_hash))
-    else:
-        cur.execute("INSERT INTO rgz_users (login, password) VALUES (?, ?);", (login, password_hash))
-
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT id FROM rgz_users WHERE login=%s;", (login,))
-    else:
-        cur.execute("SELECT id FROM rgz_users WHERE login=?;", (login,))
-    
-    user = cur.fetchone()
     db_close(conn, cur)
-
-    session['login'] = login
-    session['user_id'] = user['id'] if current_app.config['DB_TYPE'] == 'postgres' else user[0]
-    
-    return redirect('/rgz/?registered=true')
+    return render_template('rgz/register_success.html', login=login)
 
 @rgz.route('/rgz/login', methods=['GET', 'POST'])
 def login():
@@ -98,30 +80,24 @@ def login():
     login = request.form.get('login')
     password = request.form.get('password')
     
-    if not (login or password):
-        return render_template('rgz/login.html', error='Заполните поля')
+    if not (login and password):
+        return render_template('rgz/login.html', error='Заполните все поля')
     
     conn, cur = db_connect()
     
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT * FROM rgz_users WHERE login=%s;", (login,))
-    else:
-        cur.execute("SELECT * FROM rgz_users WHERE login=?;", (login,))
-    
+    cur.execute("SELECT * FROM rgz_users WHERE login=%s", (login,))
     user = cur.fetchone()
     
-    if not user:
+    if not user or not check_password_hash(user['password'], password):
         db_close(conn, cur)
-        return render_template('rgz/login.html', error='Логин и/или пароль неверны')
-    
-    if not check_password_hash(user['password'], password):
-        db_close(conn, cur)
-        return render_template('rgz/login.html', error='Логин и/или пароль неверны')
-    
-    session['login'] = login
-    session['user_id'] = user['id'] if current_app.config['DB_TYPE'] == 'postgres' else user[0]
+        return render_template('rgz/login.html', error='Неверный логин или пароль')
     
     db_close(conn, cur)
+    
+    # Сохраняем пользователя в сессии
+    session['login'] = login
+    session['user_id'] = user['id']
+    
     return redirect('/rgz/')
 
 @rgz.route('/rgz/logout')

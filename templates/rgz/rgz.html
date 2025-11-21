@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block lab %}Онлайн-магазин мебели{% endblock %}
+
+{% block main %}
+    <h1>Каталог мебели</h1>
+
+    <div>
+        {% if login %}
+            <span>Пользователь: {{ login }}</span>
+            <a href="/rgz/logout">Выйти</a>
+            <a href="/rgz/cart">Корзина</a>
+        {% else %}
+            <a href="/rgz/login">Войти</a>
+            <a href="/rgz/register">Регистрация</a>
+        {% endif %}
+    </div>
+
+    <div class="furniture-list">
+        {% for item in furniture %}
+            <div class="furniture-item">
+                <h3>{{ item['name'] }}</h3>
+                <p>{{ item['description'] }}</p>
+                <p class="price">Цена: {{ item['price'] }} руб.</p>
+                {% if item['image'] %}
+                    <img src="{{ url_for('static', filename=item['image']) }}" alt="{{ item['name'] }}" style="max-width: 200px;">
+                {% endif %}
+                {% if login %}
+                    <button onclick="addToCart({{ item['id'] }})">Добавить в корзину</button>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function addToCart(furnitureId) {
+        // Позже добавим функцию добавления в корзину
+        alert('Товар добавлен в корзину! ID: ' + furnitureId);
+    }
+</script>
+{% endblock %}

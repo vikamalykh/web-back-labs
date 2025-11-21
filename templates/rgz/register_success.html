@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block lab %}Успешная регистрация - Магазин мебели{% endblock %}
+
+{% block main %}
+    <h1>Регистрация успешна!</h1>
+    <p>Пользователь <strong>{{ login }}</strong> успешно зарегистрирован.</p>
+    <a href="/rgz/login">Войти в систему</a>
+{% endblock %}
