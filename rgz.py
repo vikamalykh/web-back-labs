@@ -200,3 +200,139 @@ def get_furniture(params, request_id):
         return json_rpc_response(None, {"code": -32000, "message": str(e)}, request_id)
     finally:
         db_close(conn, cur)
+
+
+def add_to_cart(params, request_id):
+    login = session.get('login')
+    user_id = session.get('user_id')
+    
+    if not login:
+        return json_rpc_response(None, {"code": 1, "message": "Необходима авторизация"}, request_id)
+    
+    furniture_id = params.get('furniture_id')
+    if not furniture_id:
+        return json_rpc_response(None, {"code": -32602, "message": "Invalid params"}, request_id)
+    
+    conn, cur = db_connect()
+    
+    try:
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT * FROM rgz_furniture WHERE id = %s", (furniture_id,))
+        else:
+            cur.execute("SELECT * FROM rgz_furniture WHERE id = ?", (furniture_id,))
+        
+        furniture = cur.fetchone()
+        if not furniture:
+            return json_rpc_response(None, {"code": 2, "message": "Товар не найден"}, request_id)
+        
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT * FROM rgz_cart WHERE user_id = %s AND furniture_id = %s", 
+                       (user_id, furniture_id))
+        else:
+            cur.execute("SELECT * FROM rgz_cart WHERE user_id = ? AND furniture_id = ?", 
+                       (user_id, furniture_id))
+        
+        existing_item = cur.fetchone()
+        
+        if existing_item:
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("UPDATE rgz_cart SET quantity = quantity + 1 WHERE id = %s", 
+                           (existing_item['id'],))
+            else:
+                cur.execute("UPDATE rgz_cart SET quantity = quantity + 1 WHERE id = ?", 
+                           (existing_item['id'],))
+        else:
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("INSERT INTO rgz_cart (user_id, furniture_id, quantity) VALUES (%s, %s, 1)", 
+                           (user_id, furniture_id))
+            else:
+                cur.execute("INSERT INTO rgz_cart (user_id, furniture_id, quantity) VALUES (?, ?, 1)", 
+                           (user_id, furniture_id))
+        
+        return json_rpc_response({"success": True}, None, request_id)
+    except Exception as e:
+        return json_rpc_response(None, {"code": -32000, "message": str(e)}, request_id)
+    finally:
+        db_close(conn, cur)
+
+def get_cart(params, request_id):
+    login = session.get('login')
+    user_id = session.get('user_id')
+    
+    if not login:
+        return json_rpc_response(None, {"code": 1, "message": "Необходима авторизация"}, request_id)
+    
+    conn, cur = db_connect()
+    
+    try:
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("""
+                SELECT c.*, f.name, f.price, f.image 
+                FROM rgz_cart c 
+                JOIN rgz_furniture f ON c.furniture_id = f.id 
+                WHERE c.user_id = %s
+            """, (user_id,))
+        else:
+            cur.execute("""
+                SELECT c.*, f.name, f.price, f.image 
+                FROM rgz_cart c 
+                JOIN rgz_furniture f ON c.furniture_id = f.id 
+                WHERE c.user_id = ?
+            """, (user_id,))
+        
+        cart_items = []
+        total = 0
+        for item in cur.fetchall():
+            item_dict = dict(item)
+            item_total = float(item_dict['price']) * item_dict['quantity']
+            item_dict['total'] = item_total
+            total += item_total
+            cart_items.append(item_dict)
+        
+        return json_rpc_response({
+            "items": cart_items,
+            "total": total
+        }, None, request_id)
+    except Exception as e:
+        return json_rpc_response(None, {"code": -32000, "message": str(e)}, request_id)
+    finally:
+        db_close(conn, cur)
+
+def remove_from_cart(params, request_id):
+    login = session.get('login')
+    user_id = session.get('user_id')
+    
+    if not login:
+        return json_rpc_response(None, {"code": 1, "message": "Необходима авторизация"}, request_id)
+    
+    cart_item_id = params.get('cart_item_id')
+    if not cart_item_id:
+        return json_rpc_response(None, {"code": -32602, "message": "Invalid params"}, request_id)
+    
+    conn, cur = db_connect()
+    
+    try:
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT * FROM rgz_cart WHERE id = %s AND user_id = %s", 
+                       (cart_item_id, user_id))
+        else:
+            cur.execute("SELECT * FROM rgz_cart WHERE id = ? AND user_id = ?", 
+                       (cart_item_id, user_id))
+        
+        cart_item = cur.fetchone()
+        
+        if not cart_item:
+            return json_rpc_response(None, {"code": 3, "message": "Товар не найден в корзине"}, request_id)
+        
+
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("DELETE FROM rgz_cart WHERE id = %s", (cart_item_id,))
+        else:
+            cur.execute("DELETE FROM rgz_cart WHERE id = ?", (cart_item_id,))
+        
+        return json_rpc_response({"success": True}, None, request_id)
+    except Exception as e:
+        return json_rpc_response(None, {"code": -32000, "message": str(e)}, request_id)
+    finally:
+        db_close(conn, cur)
+
