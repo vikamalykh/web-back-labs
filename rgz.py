@@ -168,3 +168,35 @@ def api():
             },
             "id": request_id
         })
+
+def json_rpc_response(result=None, error=None, request_id=None):
+    response = {
+        "jsonrpc": "2.0",
+        "id": request_id
+    }
+    
+    if error:
+        response["error"] = error
+    else:
+        response["result"] = result
+    
+    return jsonify(response)
+
+def get_furniture(params, request_id):
+    conn, cur = db_connect()
+    
+    try:
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT * FROM rgz_furniture ORDER BY name")
+        else:
+            cur.execute("SELECT * FROM rgz_furniture ORDER BY name")
+        
+        furniture = []
+        for item in cur.fetchall():
+            furniture.append(dict(item))
+        
+        return json_rpc_response(furniture, None, request_id)
+    except Exception as e:
+        return json_rpc_response(None, {"code": -32000, "message": str(e)}, request_id)
+    finally:
+        db_close(conn, cur)
