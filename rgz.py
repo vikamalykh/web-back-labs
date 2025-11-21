@@ -120,3 +120,51 @@ def logout():
 @rgz.route('/rgz/cart')
 def cart():
     return render_template('rgz/cart.html')
+
+@rgz.route('/rgz/api', methods=['POST'])
+def api():
+    if request.method != 'POST':
+        return jsonify({
+            "jsonrpc": "2.0",
+            "error": {
+                "code": -32600,
+                "message": "Invalid Request"
+            },
+            "id": None
+        })
+    
+    data = request.get_json()
+
+    if not data or 'jsonrpc' not in data or data['jsonrpc'] != '2.0' or 'method' not in data:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "error": {
+                "code": -32600,
+                "message": "Invalid Request"
+            },
+            "id": data.get('id') if data else None
+        })
+    
+    method = data.get('method')
+    params = data.get('params', {})
+    request_id = data.get('id')
+    
+    if method == 'get_furniture':
+        return get_furniture(params, request_id)
+    elif method == 'add_to_cart':
+        return add_to_cart(params, request_id)
+    elif method == 'get_cart':
+        return get_cart(params, request_id)
+    elif method == 'remove_from_cart':
+        return remove_from_cart(params, request_id)
+    elif method == 'create_order':
+        return create_order(params, request_id)
+    else:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "error": {
+                "code": -32601,
+                "message": "Method not found"
+            },
+            "id": request_id
+        })
