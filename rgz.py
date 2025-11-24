@@ -1,4 +1,5 @@
 from flask import Blueprint, url_for, request, render_template, make_response, redirect, session, current_app, jsonify
+import re
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -46,6 +47,17 @@ def main():
     login = session.get('login')
     return render_template('rgz/rgz.html', furniture=furniture, login=login)
 
+
+def validate_latin_chars(text):
+    """Валидация: только латинские буквы, цифры и знаки препинания"""
+    if not text or not text.strip():
+        return False, "Поле не может быть пустым"
+    
+    if not re.match(r'^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};\':"\\|,.<>\/?]*$', text):
+        return False, "Можно использовать только латинские буквы, цифры и знаки препинания"
+    
+    return True, ""
+
 @rgz.route('/rgz/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -53,6 +65,16 @@ def register():
     
     login = request.form.get('login')
     password = request.form.get('password')
+
+    #валидация
+    is_valid_login, login_error = validate_latin_chars(login)
+    is_valid_password, password_error = validate_latin_chars(password)
+    
+    if not is_valid_login:
+        return render_template('rgz/register.html', error=login_error)
+    
+    if not is_valid_password:
+        return render_template('rgz/register.html', error=password_error)
     
     if not (login and password):
         return render_template('rgz/register.html', error='Заполните все поля')
@@ -87,6 +109,16 @@ def login():
     
     login = request.form.get('login')
     password = request.form.get('password')
+
+    #валидация
+    is_valid_login, login_error = validate_latin_chars(login)
+    is_valid_password, password_error = validate_latin_chars(password)
+    
+    if not is_valid_login:
+        return render_template('rgz/login.html', error=login_error)
+    
+    if not is_valid_password:
+        return render_template('rgz/login.html', error=password_error)
     
     if not (login and password):
         return render_template('rgz/login.html', error='Заполните все поля')
@@ -159,6 +191,8 @@ def api():
         return remove_from_cart(params, request_id)
     elif method == 'create_order':
         return create_order(params, request_id)
+    elif method == 'delete_account':
+        return delete_account(params, request_id)
     else:
         return jsonify({
             "jsonrpc": "2.0",
@@ -408,6 +442,52 @@ def create_order(params, request_id):
             "order_id": order_id,
             "total_amount": total_amount
         }, None, request_id)
+    except Exception as e:
+        return json_rpc_response(None, {"code": -32000, "message": str(e)}, request_id)
+    finally:
+        db_close(conn, cur)
+
+
+def delete_account(params, request_id):
+    login = session.get('login')
+    user_id = session.get('user_id')
+    
+    if not login:
+        return json_rpc_response(None, {"code": 1, "message": "Необходима авторизация"}, request_id)
+    
+    conn, cur = db_connect()
+    
+    try:
+        #удалить корзину пользователя
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("DELETE FROM rgz_cart WHERE user_id = %s", (user_id,))
+        else:
+            cur.execute("DELETE FROM rgz_cart WHERE user_id = ?", (user_id,))
+        
+        #удалить заказы
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT id FROM rgz_orders WHERE user_id = %s", (user_id,))
+            orders = cur.fetchall()
+            for order in orders:
+                cur.execute("DELETE FROM rgz_order_items WHERE order_id = %s", (order['id'],))
+            cur.execute("DELETE FROM rgz_orders WHERE user_id = %s", (user_id,))
+        else:
+            cur.execute("SELECT id FROM rgz_orders WHERE user_id = ?", (user_id,))
+            orders = cur.fetchall()
+            for order in orders:
+                cur.execute("DELETE FROM rgz_order_items WHERE order_id = ?", (order['id'],))
+            cur.execute("DELETE FROM rgz_orders WHERE user_id = ?", (user_id,))
+        
+        #удалить пользователя
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("DELETE FROM rgz_users WHERE id = %s", (user_id,))
+        else:
+            cur.execute("DELETE FROM rgz_users WHERE id = ?", (user_id,))
+
+        session.clear()
+        
+        return json_rpc_response({"success": True, "message": "Аккаунт успешно удален"}, None, request_id)
+        
     except Exception as e:
         return json_rpc_response(None, {"code": -32000, "message": str(e)}, request_id)
     finally:

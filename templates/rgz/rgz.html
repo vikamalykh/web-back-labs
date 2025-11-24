@@ -85,6 +85,26 @@
         }
     }
 
+    async function deleteAccount() {
+    if (!confirm('ВНИМАНИЕ! Вы уверены, что хотите удалить аккаунт? Все ваши данные будут удалены безвозвратно.')) {
+        return;
+    }
+    
+    try {
+        const result = await callApi('delete_account');
+        
+        if (result.result) {
+            alert('Аккаунт успешно удален');
+            window.location.href = '/rgz/';
+        } else if (result.error) {
+            alert('Ошибка: ' + result.error.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ошибка удаления аккаунта');
+    }
+}
+
     document.addEventListener('DOMContentLoaded', function() {
         loadFurniture();
     });
@@ -106,6 +126,7 @@
                 <div class="user-actions">
                     <a href="/rgz/cart" class="cart-btn">Корзина</a>
                     <a href="/rgz/logout" class="logout-btn">Выйти</a>
+                    <button onclick="deleteAccount()" class="delete-account-btn">Удалить аккаунт</button>
                 </div>
             {% else %}
                 <div class="user-info">
