@@ -9,7 +9,7 @@
 {% block script %}
 <script>
     let currentFurniture = [];
-
+    // функция для вызова API методов
     async function callApi(method, params = {}) {
         const response = await fetch('/rgz/api', {
             method: 'POST',
@@ -26,7 +26,7 @@
         
         return await response.json();
     }
-
+    // функция загрузки мебели из API
     async function loadFurniture() {
         try {
             const result = await callApi('get_furniture');
@@ -41,11 +41,11 @@
             alert('Ошибка загрузки товаров');
         }
     }
-
+    // функция отрисовки списка мебели в виде карточек
     function renderFurniture(furniture) {
         const grid = document.querySelector('.furniture-grid');
         grid.innerHTML = '';
-
+        // для кадого элемента
         furniture.forEach(item => {
             const card = document.createElement('div');
             card.className = 'furniture-card';
@@ -69,7 +69,7 @@
             grid.appendChild(card);
         });
     }
-
+    // товар в корзину
     async function addToCart(furnitureId) {
         try {
             const result = await callApi('add_to_cart', { furniture_id: furnitureId });
@@ -84,7 +84,7 @@
             alert('Ошибка добавления в корзину');
         }
     }
-
+    // удалить аккаунт
     async function deleteAccount() {
     if (!confirm('ВНИМАНИЕ! Вы уверены, что хотите удалить аккаунт? Все ваши данные будут удалены безвозвратно.')) {
         return;

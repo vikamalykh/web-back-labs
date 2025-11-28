@@ -47,9 +47,8 @@ def main():
     login = session.get('login')
     return render_template('rgz/rgz.html', furniture=furniture, login=login)
 
-
+#ограничение на пароль
 def validate_latin_chars(text):
-    """Валидация: только латинские буквы, цифры и знаки препинания"""
     if not text or not text.strip():
         return False, "Поле не может быть пустым"
     
@@ -57,6 +56,7 @@ def validate_latin_chars(text):
         return False, "Можно использовать только латинские буквы, цифры и знаки препинания"
     
     return True, ""
+
 
 @rgz.route('/rgz/register', methods=['GET', 'POST'])
 def register():
@@ -81,6 +81,7 @@ def register():
     
     conn, cur = db_connect()
     
+    #проверка логина
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("SELECT * FROM rgz_users WHERE login=%s", (login,))
     else:
@@ -101,6 +102,7 @@ def register():
     
     db_close(conn, cur)
     return render_template('rgz/register_success.html', login=login)
+
 
 @rgz.route('/rgz/login', methods=['GET', 'POST'])
 def login():
@@ -153,6 +155,7 @@ def logout():
 def cart():
     return render_template('rgz/cart.html')
 
+
 @rgz.route('/rgz/api', methods=['POST'])
 def api():
     if request.method != 'POST':
@@ -166,7 +169,7 @@ def api():
         })
     
     data = request.get_json()
-
+    #наличие обязательных полей JSON-RPC 2.0
     if not data or 'jsonrpc' not in data or data['jsonrpc'] != '2.0' or 'method' not in data:
         return jsonify({
             "jsonrpc": "2.0",
@@ -180,7 +183,7 @@ def api():
     method = data.get('method')
     params = data.get('params', {})
     request_id = data.get('id')
-    
+    #метод -> функция
     if method == 'get_furniture':
         return get_furniture(params, request_id)
     elif method == 'add_to_cart':
@@ -202,7 +205,7 @@ def api():
             },
             "id": request_id
         })
-
+#создание  унифицированных JSON-RPC ответов
 def json_rpc_response(result=None, error=None, request_id=None):
     response = {
         "jsonrpc": "2.0",
@@ -216,6 +219,7 @@ def json_rpc_response(result=None, error=None, request_id=None):
     
     return jsonify(response)
 
+
 def get_furniture(params, request_id):
     conn, cur = db_connect()
     
@@ -224,7 +228,7 @@ def get_furniture(params, request_id):
             cur.execute("SELECT * FROM rgz_furniture ORDER BY name")
         else:
             cur.execute("SELECT * FROM rgz_furniture ORDER BY name")
-        
+        #словарь
         furniture = []
         for item in cur.fetchall():
             furniture.append(dict(item))
@@ -235,7 +239,7 @@ def get_furniture(params, request_id):
     finally:
         db_close(conn, cur)
 
-
+#товар в корзину
 def add_to_cart(params, request_id):
     login = session.get('login')
     user_id = session.get('user_id')
@@ -258,7 +262,7 @@ def add_to_cart(params, request_id):
         furniture = cur.fetchone()
         if not furniture:
             return json_rpc_response(None, {"code": 2, "message": "Товар не найден"}, request_id)
-        
+        #есть ли в корзине
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("SELECT * FROM rgz_cart WHERE user_id = %s AND furniture_id = %s", 
                        (user_id, furniture_id))
@@ -269,6 +273,7 @@ def add_to_cart(params, request_id):
         existing_item = cur.fetchone()
         
         if existing_item:
+            #дублируем товар
             if current_app.config['DB_TYPE'] == 'postgres':
                 cur.execute("UPDATE rgz_cart SET quantity = quantity + 1 WHERE id = %s", 
                            (existing_item['id'],))
@@ -276,6 +281,7 @@ def add_to_cart(params, request_id):
                 cur.execute("UPDATE rgz_cart SET quantity = quantity + 1 WHERE id = ?", 
                            (existing_item['id'],))
         else:
+            #добавляем товар
             if current_app.config['DB_TYPE'] == 'postgres':
                 cur.execute("INSERT INTO rgz_cart (user_id, furniture_id, quantity) VALUES (%s, %s, 1)", 
                            (user_id, furniture_id))
@@ -289,6 +295,7 @@ def add_to_cart(params, request_id):
     finally:
         db_close(conn, cur)
 
+#содержимое корзины
 def get_cart(params, request_id):
     login = session.get('login')
     user_id = session.get('user_id')
@@ -297,7 +304,7 @@ def get_cart(params, request_id):
         return json_rpc_response(None, {"code": 1, "message": "Необходима авторизация"}, request_id)
     
     conn, cur = db_connect()
-    
+    #извлекаем данные и соединяем их
     try:
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("""
@@ -313,12 +320,12 @@ def get_cart(params, request_id):
                 JOIN rgz_furniture f ON c.furniture_id = f.id 
                 WHERE c.user_id = ?
             """, (user_id,))
-        
+        #результат запроса
         cart_items = []
         total = 0
         for item in cur.fetchall():
             item_dict = dict(item)
-            item_total = float(item_dict['price']) * item_dict['quantity']
+            item_total = float(item_dict['price']) * item_dict['quantity']#для каждого товара
             item_dict['total'] = item_total
             total += item_total
             cart_items.append(item_dict)
@@ -332,13 +339,14 @@ def get_cart(params, request_id):
     finally:
         db_close(conn, cur)
 
+#удалить товар
 def remove_from_cart(params, request_id):
     login = session.get('login')
     user_id = session.get('user_id')
     
     if not login:
         return json_rpc_response(None, {"code": 1, "message": "Необходима авторизация"}, request_id)
-    
+    #id для удаления
     cart_item_id = params.get('cart_item_id')
     if not cart_item_id:
         return json_rpc_response(None, {"code": -32602, "message": "Invalid params"}, request_id)
@@ -370,8 +378,8 @@ def remove_from_cart(params, request_id):
     finally:
         db_close(conn, cur)
 
+#создаём заказ
 def create_order(params, request_id):
-    """Создание заказа из корзины"""
     login = session.get('login')
     user_id = session.get('user_id')
     
@@ -381,6 +389,7 @@ def create_order(params, request_id):
     conn, cur = db_connect()
     
     try:
+        #все товары из корзины пользователя с информацией о ценах
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("""
                 SELECT c.*, f.name, f.price 
@@ -404,7 +413,7 @@ def create_order(params, request_id):
         total_amount = 0
         for item in cart_items:
             total_amount += float(item['price']) * item['quantity']
-
+        #запись заказа в таблице rgz_orders
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("""
                 INSERT INTO rgz_orders (user_id, total_amount) 
@@ -420,7 +429,7 @@ def create_order(params, request_id):
             cur.execute("INSERT INTO rgz_orders (user_id, total_amount) VALUES (?, ?)", 
                        (user_id, total_amount))
             order_id = cur.lastrowid
-
+        #все товары из корзины в таблицу элементов заказа
         for item in cart_items:
             if current_app.config['DB_TYPE'] == 'postgres':
                 cur.execute("""
@@ -432,7 +441,7 @@ def create_order(params, request_id):
                     INSERT INTO rgz_order_items (order_id, furniture_id, quantity, price) 
                     VALUES (?, ?, ?, ?)
                 """, (order_id, item['furniture_id'], item['quantity'], item['price']))
-
+        #очищаем корзину
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("DELETE FROM rgz_cart WHERE user_id = %s", (user_id,))
         else:
@@ -447,7 +456,7 @@ def create_order(params, request_id):
     finally:
         db_close(conn, cur)
 
-
+#удаление данных 
 def delete_account(params, request_id):
     login = session.get('login')
     user_id = session.get('user_id')
@@ -464,7 +473,7 @@ def delete_account(params, request_id):
         else:
             cur.execute("DELETE FROM rgz_cart WHERE user_id = ?", (user_id,))
         
-        #удалить заказы
+        #удалить заказы (сначала элементы заказов, потом сами заказы)
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("SELECT id FROM rgz_orders WHERE user_id = %s", (user_id,))
             orders = cur.fetchall()
