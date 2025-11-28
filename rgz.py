@@ -365,12 +365,21 @@ def remove_from_cart(params, request_id):
         
         if not cart_item:
             return json_rpc_response(None, {"code": 3, "message": "Товар не найден в корзине"}, request_id)
-        
 
-        if current_app.config['DB_TYPE'] == 'postgres':
-            cur.execute("DELETE FROM rgz_cart WHERE id = %s", (cart_item_id,))
+        if cart_item['quantity'] > 1:
+            #больше 1 штуки - уменьшаем количество
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("UPDATE rgz_cart SET quantity = quantity - 1 WHERE id = %s", 
+                           (cart_item_id,))
+            else:
+                cur.execute("UPDATE rgz_cart SET quantity = quantity - 1 WHERE id = ?", 
+                           (cart_item_id,))
         else:
-            cur.execute("DELETE FROM rgz_cart WHERE id = ?", (cart_item_id,))
+            #осталась 1 штука - удаляем запись полностью
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("DELETE FROM rgz_cart WHERE id = %s", (cart_item_id,))
+            else:
+                cur.execute("DELETE FROM rgz_cart WHERE id = ?", (cart_item_id,))
         
         return json_rpc_response({"success": True}, None, request_id)
     except Exception as e:

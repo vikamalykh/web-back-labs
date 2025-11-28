@@ -92,17 +92,15 @@
             </div>
         `;
     }
-
-    async function removeFromCart(cartItemId) {
-        if (!confirm('Удалить товар из корзины?')) {
-            return;
-        }
-
+    // функция удалить товар
+    async function removeFromCart(cartItemId, currentQuantity) {
         try {
-            const result = await callApi('remove_from_cart', { cart_item_id: cartItemId });
+            const result = await callApi('remove_from_cart', { 
+                cart_item_id: cartItemId
+            });
             
             if (result.result) {
-                await loadCart(); 
+                await loadCart(); // Перезагружаем корзину
             } else if (result.error) {
                 alert('Ошибка: ' + result.error.message);
             }
@@ -111,7 +109,7 @@
             alert('Ошибка удаления из корзины');
         }
     }
-
+    // функция оформить заказ
     async function createOrder() {
         try {
             const result = await callApi('create_order');
