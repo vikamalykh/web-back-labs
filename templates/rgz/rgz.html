@@ -139,32 +139,8 @@
             {% endif %}
         </div>
 
-        <div class="furniture-grid">
-            {% for item in furniture %}
-                <div class="furniture-card">
-                    <h3>{{ item['name'] }}</h3>
-                    <p class="description">{{ item['description'] }}</p>
-                    
-                    {% if item['image'] %}
-                        <img src="{{ url_for('static', filename=item['image']) }}" 
-                             alt="{{ item['name'] }}" 
-                             class="furniture-image"
-                             onerror="this.style.display='none'">
-                    {% endif %}
-                    
-                    <div class="price">{{ item['price'] }} руб.</div>
-                    
-                    {% if login %}
-                        <button class="add-to-cart-btn" onclick="addToCart({{ item['id'] }})">
-                            Добавить в корзину
-                        </button>
-                    {% else %}
-                        <button class="add-to-cart-btn" disabled title="Для добавления в корзину необходимо авторизоваться">
-                            Войдите для покупок
-                        </button>
-                    {% endif %}
-                </div>
-            {% endfor %}
+        <div class="furniture-grid" id="furniture-grid">
+            <div class="loading">Загрузка товаров...</div>
         </div>
     </div>
 {% endblock %}

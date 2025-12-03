@@ -47,7 +47,7 @@ def main():
     login = session.get('login')
     return render_template('rgz/rgz.html', furniture=furniture, login=login)
 
-#ограничение на пароль
+#ограничение
 def validate_latin_chars(text):
     if not text or not text.strip():
         return False, "Поле не может быть пустым"
@@ -205,7 +205,7 @@ def api():
             },
             "id": request_id
         })
-#создание  унифицированных JSON-RPC ответов
+#создание JSON-RPC ответов
 def json_rpc_response(result=None, error=None, request_id=None):
     response = {
         "jsonrpc": "2.0",

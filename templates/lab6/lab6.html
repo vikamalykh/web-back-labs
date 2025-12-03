@@ -23,7 +23,7 @@ function getOfficeList() {
         })
         .then(function(response) {
             return response.json();
-        })
+        }) // ответ в JSON объект
         .then(function(data) {
             const office_list = data.result;
             const ul = document.getElementById('office-list');
@@ -45,7 +45,7 @@ function getOfficeList() {
                     <div class="office-actions"></div>
                 `;
 
-                const actionsDiv = li.querySelector('.office-actions');
+                const actionsDiv = li.querySelector('.office-actions');// кнопки
                 
                 if (!office.tenant) {
                     const bookingButton = document.createElement('button');
