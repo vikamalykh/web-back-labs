@@ -100,7 +100,7 @@
             });
             
             if (result.result) {
-                await loadCart(); // Перезагружаем корзину
+                await loadCart(); // перезагружаем корзину
             } else if (result.error) {
                 alert('Ошибка: ' + result.error.message);
             }
