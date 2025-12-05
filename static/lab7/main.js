@@ -28,13 +28,13 @@ function fillFilmList() {
                 let editButton = document.createElement('button');
                 editButton.innerText = 'Редактировать';
                 editButton.onclick = function() {
-                    editFilm(i);
+                    editFilm(films[i].id);
                 };
                 
                 let delButton = document.createElement('button');
                 delButton.innerText = 'Удалить';
                 delButton.onclick = function() {
-                    deleteFilm(i, films[i].title_ru);
+                    deleteFilm(films[i].id, films[i].title_ru);
                 };
                 
                 tdActions.append(editButton);
@@ -61,10 +61,23 @@ function deleteFilm(id, title) {
     });
 }
 
+
+function clearAllErrors() {
+    document.getElementById('title_ru_error').innerText = '';
+    document.getElementById('title_error').innerText = '';
+    document.getElementById('year_error').innerText = '';
+    document.getElementById('description_error').innerText = '';
+
+    document.getElementById('title_ru').classList.remove('error-border');
+    document.getElementById('title').classList.remove('error-border');
+    document.getElementById('year').classList.remove('error-border');
+    document.getElementById('description').classList.remove('error-border');
+}
+
+
 function showModal() {
     document.getElementById('film-modal').style.display = 'block';
-    document.getElementById('description_error').innerText = '';
-    document.getElementById('description').classList.remove('error-border');
+    clearAllErrors();
 }
 
 function hideModal() {
@@ -93,11 +106,10 @@ function sendFilm() {
         description: document.getElementById('description').value
     };
 
-    const url = `/lab7/rest-api/films/${id}`;
+    const url = id === '' ? '/lab7/rest-api/films/' : `/lab7/rest-api/films/${id}`;
     const method = id === '' ? 'POST' : 'PUT';
     
-    document.getElementById('description_error').innerText = '';
-    document.getElementById('description').classList.remove('error-border');
+    clearAllErrors();
 
     fetch(url, {
         method: method,
@@ -113,10 +125,20 @@ function sendFilm() {
         return resp.json();
     })
     .then(function(errors) {
-        if(errors.description) {
-            document.getElementById('description_error').innerText = errors.description;
-            document.getElementById('description').classList.add('error-border');
+        if (errors && Object.keys(errors).length > 0) {
+            for (const [field, message] of Object.entries(errors)) {
+                const errorElement = document.getElementById(`${field}_error`);
+                const inputElement = document.getElementById(field);
+                
+                if (errorElement && inputElement) {
+                    errorElement.innerText = message;
+                    inputElement.classList.add('error-border');
+                }
+            }
         }
+    })
+    .catch(function(error) {
+        console.error('Ошибка при отправке данных:', error);
     });
 }
 
@@ -126,11 +148,14 @@ function editFilm(id) {
             return data.json();
         })
         .then(function (film) {
-            document.getElementById('film-id').value = id;
+            document.getElementById('film-id').value = film.id;
             document.getElementById('title').value = film.title;
-            document.getElementById('title_ru').value = film.title_ru;
+            document.getElementById('title_ru').value = film.title_ru;  // Добавьте заполнение этого поля
             document.getElementById('year').value = film.year;
             document.getElementById('description').value = film.description;
             showModal();
+        })
+        .catch(function(error) {
+            console.error('Ошибка при загрузке фильма:', error);
         });
 }

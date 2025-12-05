@@ -35,22 +35,25 @@
 <div id="film-modal" class="modal">
     <div class="modal-content">
         <input type="hidden" id="film-id">
-        
+
         <label for="title_ru">
             Название фильма на русском: *
         </label>
         <input type="text" id="title_ru" required>
+        <div id="title_ru_error" class="error-message"></div>
         
         <label for="title">
             Название фильма на оригинальном языке
             <i>(если фильм русский, то оставьте пустым):</i>
         </label>
         <input type="text" id="title">
+        <div id="title_error" class="error-message"></div>
         
         <label for="year">
             Год выпуска: *
         </label>
         <input type="number" id="year" required>
+        <div id="year_error" class="error-message"></div>
         
         <label for="description">
             Описание: *
