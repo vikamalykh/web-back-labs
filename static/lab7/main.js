@@ -10,23 +10,29 @@ function fillFilmList() {
             for(let i = 0; i < films.length; i++) {
                 let tr = document.createElement('tr');
                 
-                let tdTitle = document.createElement('td');
                 let tdTitleRus = document.createElement('td');
+                let tdTitle = document.createElement('td');
                 let tdYear = document.createElement('td');
                 let tdActions = document.createElement('td');
                 
-                tdTitle.innerText = films[i].title == films[i].title_ru ? '' : films[i].title;
                 tdTitleRus.innerText = films[i].title_ru;
+
+                if (films[i].title && films[i].title !== films[i].title_ru) {
+                    tdTitle.innerHTML = `<span class="original-title">${films[i].title}</span>`;
+                } else {
+                    tdTitle.innerHTML = '<span class="original-title">—</span>';
+                }
+
                 tdYear.innerText = films[i].year;
                 
                 let editButton = document.createElement('button');
-                editButton.innerText = 'редактировать';
+                editButton.innerText = 'Редактировать';
                 editButton.onclick = function() {
                     editFilm(i);
                 };
                 
                 let delButton = document.createElement('button');
-                delButton.innerText = 'удалить';
+                delButton.innerText = 'Удалить';
                 delButton.onclick = function() {
                     deleteFilm(i, films[i].title_ru);
                 };
@@ -34,8 +40,8 @@ function fillFilmList() {
                 tdActions.append(editButton);
                 tdActions.append(delButton);
                 
-                tr.append(tdTitle);
                 tr.append(tdTitleRus);
+                tr.append(tdTitle);
                 tr.append(tdYear);
                 tr.append(tdActions);
                 
@@ -56,12 +62,13 @@ function deleteFilm(id, title) {
 }
 
 function showModal() {
-    document.querySelector('div.modal').style.display = 'block';
+    document.getElementById('film-modal').style.display = 'block';
     document.getElementById('description_error').innerText = '';
+    document.getElementById('description').classList.remove('error-border');
 }
 
 function hideModal() {
-    document.querySelector('div.modal').style.display = 'none';
+    document.getElementById('film-modal').style.display = 'none';
 }
 
 function cancel() {
@@ -69,7 +76,7 @@ function cancel() {
 }
 
 function addFilm() {
-    document.getElementById('id').value = '';
+    document.getElementById('film-id').value = '';
     document.getElementById('title').value = '';
     document.getElementById('title_ru').value = '';
     document.getElementById('year').value = '';
@@ -78,7 +85,7 @@ function addFilm() {
 }
 
 function sendFilm() {
-    const id = document.getElementById('id').value;
+    const id = document.getElementById('film-id').value;
     const film = {
         title: document.getElementById('title').value,
         title_ru: document.getElementById('title_ru').value,
@@ -89,6 +96,9 @@ function sendFilm() {
     const url = `/lab7/rest-api/films/${id}`;
     const method = id === '' ? 'POST' : 'PUT';
     
+    document.getElementById('description_error').innerText = '';
+    document.getElementById('description').classList.remove('error-border');
+
     fetch(url, {
         method: method,
         headers: {'Content-Type': 'application/json'},
@@ -105,6 +115,7 @@ function sendFilm() {
     .then(function(errors) {
         if(errors.description) {
             document.getElementById('description_error').innerText = errors.description;
+            document.getElementById('description').classList.add('error-border');
         }
     });
 }
@@ -115,7 +126,7 @@ function editFilm(id) {
             return data.json();
         })
         .then(function (film) {
-            document.getElementById('id').value = id;
+            document.getElementById('film-id').value = id;
             document.getElementById('title').value = film.title;
             document.getElementById('title_ru').value = film.title_ru;
             document.getElementById('year').value = film.year;
