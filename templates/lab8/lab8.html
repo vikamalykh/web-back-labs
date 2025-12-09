@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='lab8/lab8.css') }}">
+{% endblock %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+    <div class="lab8-container">
+        <h1>База знаний</h1>
+
+        <div class="nav-menu">
+            {% if current_user.is_authenticated %}
+                <span class="username">{{ current_user.login }}</span>
+                <a href="/lab8/logout" class="nav-btn">Выйти</a>
+            {% else %}
+                <span class="username">anonymous</span>
+                <a href="/lab8/login" class="nav-btn">Вход</a>
+                <a href="/lab8/register" class="nav-btn">Регистрация</a>
+            {% endif %}
+        </div>
+
+        <div class="main-links">
+            <a href="/lab8/articles" class="main-btn">Список статей</a>
+            <a href="/lab8/create" class="main-btn">Создать статью</a>
+        </div>
+    </div>
+{% endblock %}
