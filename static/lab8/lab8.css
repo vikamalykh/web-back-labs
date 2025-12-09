@@ -1,0 +1,56 @@
+.lab8-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.lab8-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.lab8-header {
+    font-size: 32px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.lab8-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.lab8-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.lab8-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.lab8-btn:hover {
+    background-color: #0056b3;
+}
+
+.lab8-user {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
