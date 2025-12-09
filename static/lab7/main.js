@@ -17,11 +17,7 @@ function fillFilmList() {
                 
                 tdTitleRus.innerText = films[i].title_ru;
 
-                if (films[i].title) {
-                    tdTitle.innerHTML = `<span class="original-title">${films[i].title}</span>`;
-                } else {
-                    tdTitle.innerHTML = '<span class="original-title">—</span>';
-                }
+                tdTitle.innerHTML = `<span class="original-title">${films[i].title}</span>`;
 
                 tdYear.innerText = films[i].year;
                 
@@ -150,7 +146,7 @@ function editFilm(id) {
         .then(function (film) {
             document.getElementById('film-id').value = film.id;
             document.getElementById('title').value = film.title;
-            document.getElementById('title_ru').value = film.title_ru;  // Добавьте заполнение этого поля
+            document.getElementById('title_ru').value = film.title_ru;
             document.getElementById('year').value = film.year;
             document.getElementById('description').value = film.description;
             showModal();
