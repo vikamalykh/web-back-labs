@@ -17,7 +17,11 @@ function fillFilmList() {
                 
                 tdTitleRus.innerText = films[i].title_ru;
 
-                tdTitle.innerHTML = `<span class="original-title">${films[i].title}</span>`;
+                if (films[i].title && films[i].title !== films[i].title_ru) {
+                    tdTitle.innerHTML = `<span class="original-title">${films[i].title}</span>`;
+                } else {
+                    tdTitle.innerHTML = '<span class="original-title">—</span>';
+                }
 
                 tdYear.innerText = films[i].year;
                 

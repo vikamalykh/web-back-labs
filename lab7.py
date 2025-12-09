@@ -37,7 +37,7 @@ def validate_film(film):
 
     if not film.get('title_ru') or film['title_ru'].strip() == '':
         errors['title_ru'] = 'Русское название обязательно'
-
+    #заполнение русским
     if not film.get('title') or film['title'].strip() == '':
         if film.get('title_ru'):
             film['title'] = film['title_ru']
