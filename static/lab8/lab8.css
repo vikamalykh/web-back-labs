@@ -52,3 +52,57 @@
     font-weight: bold;
     color: #333;
 }
+
+.lab8-error {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 12px;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.lab8-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.lab8-form-group {
+    margin-bottom: 20px;
+}
+
+.lab8-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.lab8-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.lab8-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.lab8-btn-secondary {
+    background-color: #6c757d;
+    margin-left: 10px;
+}
+
+.lab8-btn-secondary:hover {
+    background-color: #545b62;
+}
