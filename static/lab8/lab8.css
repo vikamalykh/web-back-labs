@@ -106,3 +106,18 @@
 .lab8-btn-secondary:hover {
     background-color: #545b62;
 }
+
+.lab8-form-footer {
+    margin-top: 20px;
+    text-align: center;
+    color: #666;
+}
+
+.lab8-form-footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.lab8-form-footer a:hover {
+    text-decoration: underline;
+}
