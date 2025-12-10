@@ -1,36 +1,40 @@
 {% extends "base.html" %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='lab8/lab8.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lab5/menu.css')}}">
 {% endblock %}
 
-{% block lab %}Лабораторная работа 8{% endblock %}
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 5{% endblock %}
 
+{# основной контент: #}
 {% block main %}
-    <div class="lab8-main">
-        <div class="lab8-title">Flask и ORM</div>
-
-        <div class="lab8-header">База знаний</div>
-
-        <div class="lab8-nav">
-            <div class="lab8-buttons">
-                <a href="/lab8/articles" class="lab8-btn">Мои статьи</a>
-                <a href="/lab8/create" class="lab8-btn">Создать статью</a>
-                {% if current_user.is_authenticated %}
-                    <a href="/lab8/profile" class="lab8-btn">Профиль</a>
-                    <a href="/lab8/logout" class="lab8-btn">Выйти</a>
-                {% else %}
-                    <a href="/lab8/login" class="lab8-btn">Войти</a>
-                    <a href="/lab8/register" class="lab8-btn">Регистрация</a>
-                {% endif %}
-            </div>
-            <div class="lab8-user">
-                {% if current_user.is_authenticated %}
-                    {{ current_user.login }}
-                {% else %}
-                    Anonymous
-                {% endif %}
-            </div>
+<div class="lab5-main">
+    <div class="lab5-title">
+        Flask и БД
+    </div>
+     <div class="lab5-header">База знаний</div>
+     <div class="lab5-nav">
+        <div class="lab5-buttons">
+            <a href="/lab5/list" class="lab5-btn">Мои статьи</a>
+            <a href="/lab5/public" class="lab5-btn">Публичные статьи</a>
+            <a href="/lab5/create" class="lab5-btn">Создать статью</a>
+            <a href="/lab5/users" class="lab5-btn">Все пользователи</a>
+            {% if login %}
+                <a href="/lab5/profile" class="lab5-btn">Профиль</a>
+                <a href="/lab5/logout" class="lab5-btn">Выйти</a>
+            {% else %}
+                <a href="/lab5/login" class="lab5-btn">Войти</a>
+                <a href="/lab5/register" class="lab5-btn">Регистрация</a>
+            {% endif %}
+        </div>
+        <div class="lab5-user">
+            {% if login %}
+                {{ login }}
+            {% else %}
+                Anonymous
+            {% endif %}
         </div>
     </div>
+</div>
 {% endblock %}

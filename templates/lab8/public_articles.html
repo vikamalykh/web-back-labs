@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='lab8/lab8.css') }}">
+{% endblock %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+    <div class="lab8-main">
+        <div class="lab8-header">Публичные статьи</div>
+        
+        {% if articles %}
+            {% for article in articles %}
+            <div class="lab8-article">
+                <h3>{{ article.title }}</h3>
+                <p>{{ article.article_text }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Публичных статей пока нет.</p>
+        {% endif %}
+        
+        <p><a href="/lab8/" class="lab8-btn">В меню</a></p>
+    </div>
+{% endblock %}

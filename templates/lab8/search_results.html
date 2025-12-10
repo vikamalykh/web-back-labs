@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+    <h1>Найдено по запросу "{{ search_query }}": {{ count }} статей</h1>
+    
+    {% for article in results %}
+    <div style="border:1px solid #ddd; padding:10px; margin:10px 0;">
+        <h3>{{ article.title }}</h3>
+        <p>{{ article.article_text[:150] }}...</p>
+    </div>
+    {% else %}
+    <p>Ничего не найдено.</p>
+    {% endfor %}
+    
+    <p><a href="/lab8/articles/search">Новый поиск</a> | <a href="/lab8/">На главную</a></p>
+{% endblock %}
