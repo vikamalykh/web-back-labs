@@ -1,16 +1,35 @@
 {% extends "base.html" %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='lab8/lab8.css') }}">
+{% endblock %}
+
 {% block lab %}Лабораторная работа 8{% endblock %}
 
 {% block main %}
-    <h1>Поиск статей</h1>
-    
-    {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
-    
-    <form method="post">
-        <input type="text" name="search_query" placeholder="Что ищем?">
-        <button>Искать</button>
-    </form>
-    
-    <p><a href="/lab8/" class="lab8-btn">В меню</a></p>
+    <div class="lab8-main">
+        <div class="lab8-header">Поиск статей</div>
+        
+        {% if error %}
+            <div class="lab8-error">{{ error }}</div>
+        {% endif %}
+        
+        <div class="lab8-form">
+            <form method="post" class="lab8-search-form">
+                <input type="text" name="search_query" 
+                       class="lab8-search-input" 
+                       placeholder="Введите слово или фразу для поиска..."
+                       value="{{ search_query if search_query else '' }}"
+                       required>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <button type="submit" class="lab8-search-button">Искать</button>
+                </div>
+            </form>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/lab8/" class="lab8-btn">К лабораторной</a>
+        </div>
+    </div>
 {% endblock %}

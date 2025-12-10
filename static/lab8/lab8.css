@@ -1,52 +1,45 @@
-/* Основные стили */
+/* lab8.css - упрощённые стили без лайков */
 .lab8-main {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 15px;
     font-family: Arial, sans-serif;
 }
 
-.lab8-title {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 30px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-}
-
 .lab8-header {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
 }
 
 .lab8-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #f0f0f0;
 }
 
 .lab8-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .lab8-btn {
     padding: 8px 16px;
-    background: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #bbb;
     color: #333;
     text-decoration: none;
     font-size: 14px;
 }
 
 .lab8-btn:hover {
-    background: #e0e0e0;
+    background: #eee;
 }
 
 .lab8-user {
@@ -54,166 +47,13 @@
     color: #333;
 }
 
-/* Стили для форм */
+/* Формы */
 .lab8-form {
     max-width: 500px;
-    margin: 0 auto;
-    padding: 25px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-}
-
-.lab8-form-group {
-    margin-bottom: 20px;
-}
-
-.lab8-form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-    font-size: 15px;
-}
-
-.lab8-input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-.lab8-textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-    resize: vertical;
-    min-height: 150px;
-    font-family: Arial, sans-serif;
-}
-
-.lab8-error {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 12px 15px;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
-.lab8-btn-secondary {
-    background-color: #6c757d;
-    color: white;
-}
-
-.lab8-btn-secondary:hover {
-    background-color: #545b62;
-}
-
-.lab8-form-footer {
-    margin-top: 25px;
-    text-align: center;
-    color: #666;
-    font-size: 14px;
-}
-
-.lab8-form-footer a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.lab8-form-footer a:hover {
-    text-decoration: underline;
-}
-
-/* Стили для чекбоксов */
-.lab8-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #555;
-}
-
-/* Стили для списка статей */
-.lab8-articles-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.lab8-article {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
-}
-
-.lab8-article h3 {
-    margin-top: 0;
-    color: #333;
-}
-
-.lab8-article-preview {
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.lab8-article-meta {
-    display: flex;
-    gap: 15px;
-    color: #777;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.lab8-article-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.lab8-btn-small {
-    padding: 6px 12px;
-    font-size: 13px;
-}
-
-.lab8-btn-danger {
-    background-color: #dc3545;
-    color: white;
-    border-color: #dc3545;
-}
-
-.lab8-btn-danger:hover {
-    background-color: #c82333;
-}
-
-/* Дополнительные стили */
-.lab8-main {
-    max-width: 900px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px;
-}
-
-.lab8-header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.lab8-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
+    background: #f5f5f5;
+    border: 1px solid #ccc;
 }
 
 .lab8-form-group {
@@ -223,63 +63,168 @@
 .lab8-form-group label {
     display: block;
     margin-bottom: 5px;
+    color: #333;
 }
 
 .lab8-input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #bbb;
 }
 
-/* Для страницы со статьями */
-.lab8-articles {
-    margin-top: 20px;
+.lab8-textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #bbb;
+    min-height: 120px;
+    font-family: Arial, sans-serif;
 }
 
-.lab8-article {
-    border: 1px solid #ddd;
-    padding: 15px;
+.lab8-error {
+    background-color: #fff0f0;
+    color: #900;
+    padding: 10px;
+    border: 1px solid #ffcccc;
     margin-bottom: 15px;
-    border-radius: 4px;
+}
+
+.lab8-btn-secondary {
+    background-color: #e5e5e5;
+}
+
+/* Чекбоксы */
+.lab8-checkbox-label {
+    display: block;
+    margin: 8px 0;
+}
+
+/* Статьи */
+.lab8-article {
+    padding: 15px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    background: #fff;
 }
 
 .lab8-article h3 {
     margin-top: 0;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.lab8-article p {
+    color: #444;
+    margin-bottom: 15px;
 }
 
 .lab8-article-meta {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-.lab8-article-meta span {
-    margin-right: 15px;
+.lab8-meta-badge {
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.lab8-meta-public {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.lab8-meta-favorite {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.lab8-article-actions {
+    display: flex;
+    gap: 8px;
 }
 
 .lab8-btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
+    background-color: #ffebee;
+    color: #c62828;
+    border-color: #ffcdd2;
 }
 
-.lab8-btn-danger:hover {
-    background-color: #c82333;
+/* Поиск */
+.lab8-search-form {
+    margin: 20px 0;
 }
 
-/* Для textarea */
-.lab8-textarea {
+.lab8-search-input {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    min-height: 150px;
-    font-family: Arial, sans-serif;
+    padding: 10px;
+    border: 1px solid #bbb;
+    margin-bottom: 10px;
 }
 
-/* Для чекбоксов */
-.lab8-checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.lab8-search-button {
+    padding: 10px 20px;
+    background: #555;
+    color: white;
+    border: none;
+}
+
+.lab8-search-result {
+    padding: 15px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    background: #fff;
+}
+
+.lab8-search-result h3 {
+    margin-top: 0;
+}
+
+.lab8-search-meta {
+    color: #666;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+/* Сообщения */
+.lab8-message {
+    padding: 15px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    color: #666;
+    text-align: center;
+}
+
+.lab8-back-link {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 6px 12px;
+    border: 1px solid #bbb;
+    color: #333;
+    text-decoration: none;
+}
+
+/* Добавим в конец lab8.css */
+.lab8-search-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.lab8-search-button {
+    padding: 12px 30px;
+    background: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.lab8-search-button:hover {
+    background: #444;
 }

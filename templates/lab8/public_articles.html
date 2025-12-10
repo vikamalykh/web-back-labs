@@ -11,16 +11,28 @@
         <div class="lab8-header">Публичные статьи</div>
         
         {% if articles %}
-            {% for article in articles %}
-            <div class="lab8-article">
-                <h3>{{ article.title }}</h3>
-                <p>{{ article.article_text }}</p>
+            <div class="lab8-articles">
+                {% for article in articles %}
+                <div class="lab8-article">
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.article_text }}</p>
+                    
+                    <div class="lab8-article-meta">
+                        {% if article.is_favorite %}
+                            <span class="lab8-meta-badge lab8-meta-favorite">Избранная</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         {% else %}
-            <p>Публичных статей пока нет.</p>
+            <div class="lab8-message">
+                Публичных статей пока нет.
+            </div>
         {% endif %}
         
-        <p><a href="/lab8/" class="lab8-btn">В меню</a></p>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/lab8/" class="lab8-btn">На главную</a>
+        </div>
     </div>
 {% endblock %}

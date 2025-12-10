@@ -10,26 +10,49 @@
     <div class="lab8-main">
         <div class="lab8-header">Мои статьи</div>
         
-        <a href="/lab8/create" class="lab8-btn">Создать статью</a>
+        <div style="margin-bottom: 25px;">
+            <a href="/lab8/create" class="lab8-btn">
+                Создать статью
+            </a>
+        </div>
         
         {% if articles %}
             <div class="lab8-articles">
                 {% for article in articles %}
                 <div class="lab8-article">
                     <h3>{{ article.title }}</h3>
-                    <p>{{ article.article_text[:100] }}...</p>
+                    <p>{{ article.article_text[:150] }}{% if article.article_text|length > 150 %}...{% endif %}</p>
+                    
                     <div class="lab8-article-meta">
-                        <span>Публичная: {{ 'Да' if article.is_public else 'Нет' }}</span>
-                        <span>Избранная: {{ 'Да' if article.is_favorite else 'Нет' }}</span>
+                        {% if article.is_public %}
+                            <span class="lab8-meta-badge lab8-meta-public">Публичная</span>
+                        {% endif %}
+                        {% if article.is_favorite %}
+                            <span class="lab8-meta-badge lab8-meta-favorite">Избранная</span>
+                        {% endif %}
                     </div>
-                    <a href="/lab8/edit/{{ article.id }}" class="lab8-btn">Редактировать</a>
-                    <a href="/lab8/delete/{{ article.id }}" class="lab8-btn lab8-btn-danger">Удалить</a>
+                    
+                    <div class="lab8-article-actions">
+                        <a href="/lab8/edit/{{ article.id }}" class="lab8-btn">Редактировать</a>
+                        <a href="/lab8/delete/{{ article.id }}" class="lab8-btn lab8-btn-danger" 
+                           onclick="return confirm('Удалить статью «{{ article.title }}»?')">
+                            Удалить
+                        </a>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
         {% else %}
-            <p>У вас пока нет статей.</p>
+            <div class="lab8-message">
+                У вас пока нет статей.
+                <div style="margin-top: 15px;">
+                    <a href="/lab8/create" class="lab8-btn">Создать первую статью</a>
+                </div>
+            </div>
         {% endif %}
-        <p><a href="/lab8/" class="lab8-btn">В меню</a></p>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/lab8/" class="lab8-btn">На главную</a>
+        </div>
     </div>
 {% endblock %}

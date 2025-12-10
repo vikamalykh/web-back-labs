@@ -99,8 +99,7 @@ def create():
         title=title,
         article_text=article_text,
         is_public=is_public,
-        is_favorite=is_favorite,
-        likes=0
+        is_favorite=is_favorite
     )
     
     db.session.add(new_article)
@@ -161,16 +160,14 @@ def search_articles():
     
     if not search_query:
         return render_template('lab8/search.html', error='Введите поисковый запрос')
-    
-    # Используем ilike для регистронезависимого поиска в БД
+
     from sqlalchemy import or_, func
     
     if current_user.is_authenticated:
-        # Для авторизованных: свои + публичные
         search_results = articles.query.filter(
             or_(
-                articles.login_id == current_user.id,  # Свои статьи
-                articles.is_public == True              # Публичные статьи
+                articles.login_id == current_user.id,
+                articles.is_public == True
             ),
             or_(
                 func.lower(articles.title).contains(search_query.lower()),
@@ -178,7 +175,6 @@ def search_articles():
             )
         ).all()
     else:
-        # Для неавторизованных: только публичные
         search_results = articles.query.filter(
             articles.is_public == True,
             or_(
