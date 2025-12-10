@@ -15,7 +15,6 @@
                 <a href="/lab8/articles" class="lab8-btn">Мои статьи</a>
                 <a href="/lab8/create" class="lab8-btn">Создать статью</a>
                 {% if current_user.is_authenticated %}
-                    <a href="/lab8/profile" class="lab8-btn">Профиль</a>
                     <a href="/lab8/logout" class="lab8-btn">Выйти</a>
                 {% else %}
                     <a href="/lab8/login" class="lab8-btn">Войти</a>
