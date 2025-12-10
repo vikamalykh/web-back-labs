@@ -31,3 +31,8 @@ def db_close(conn, cur):
     conn.commit()
     cur.close()
     conn.close()
+
+@lab8.route('/lab8/')
+def main():
+    login = session.get('login')
+    return render_template('lab8/lab8.html', login=login)
