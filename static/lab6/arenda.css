@@ -1,4 +1,3 @@
-/* Основные стили для страницы аренды офисов - светлая тема */
 .office-container {
     max-width: 800px;
     margin: 0 auto;
@@ -112,7 +111,6 @@
     font-size: 1.1em;
 }
 
-/* Простая анимация появления */
 .office-item {
     animation: fadeIn 0.3s ease;
 }
@@ -127,7 +125,6 @@
     }
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
     .office-container {
         padding: 15px;
