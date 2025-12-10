@@ -1,3 +1,4 @@
+/* Основные стили */
 .lab8-main {
     max-width: 900px;
     margin: 0 auto;
@@ -53,18 +54,9 @@
     color: #333;
 }
 
-.lab8-error {
-    background-color: #ffebee;
-    color: #c62828;
-    padding: 12px;
-    border: 1px solid #ffcdd2;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
+/* Стили для форм */
 .lab8-form {
-    max-width: 400px;
+    max-width: 500px;
     margin: 0 auto;
     padding: 25px;
     background-color: #f8f9fa;
@@ -81,26 +73,43 @@
     margin-bottom: 8px;
     font-weight: bold;
     color: #333;
+    font-size: 15px;
 }
 
 .lab8-input {
     width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
     border-radius: 4px;
     font-size: 14px;
     box-sizing: border-box;
 }
 
-.lab8-input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+.lab8-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 150px;
+    font-family: Arial, sans-serif;
+}
+
+.lab8-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
 }
 
 .lab8-btn-secondary {
     background-color: #6c757d;
-    margin-left: 10px;
+    color: white;
 }
 
 .lab8-btn-secondary:hover {
@@ -108,9 +117,10 @@
 }
 
 .lab8-form-footer {
-    margin-top: 20px;
+    margin-top: 25px;
     text-align: center;
     color: #666;
+    font-size: 14px;
 }
 
 .lab8-form-footer a {
@@ -120,4 +130,156 @@
 
 .lab8-form-footer a:hover {
     text-decoration: underline;
+}
+
+/* Стили для чекбоксов */
+.lab8-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Стили для списка статей */
+.lab8-articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lab8-article {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+}
+
+.lab8-article h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.lab8-article-preview {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.lab8-article-meta {
+    display: flex;
+    gap: 15px;
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.lab8-article-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.lab8-btn-small {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.lab8-btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.lab8-btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Дополнительные стили */
+.lab8-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.lab8-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.lab8-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.lab8-form-group {
+    margin-bottom: 15px;
+}
+
+.lab8-form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.lab8-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Для страницы со статьями */
+.lab8-articles {
+    margin-top: 20px;
+}
+
+.lab8-article {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.lab8-article h3 {
+    margin-top: 0;
+}
+
+.lab8-article-meta {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.lab8-article-meta span {
+    margin-right: 15px;
+}
+
+.lab8-btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.lab8-btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Для textarea */
+.lab8-textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 150px;
+    font-family: Arial, sans-serif;
+}
+
+/* Для чекбоксов */
+.lab8-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
