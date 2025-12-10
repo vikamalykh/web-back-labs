@@ -28,7 +28,7 @@ login_manager.init_app(app)
 def load_users(login_id):
     return users.query.get(int(login_id))
 
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'super-secret-key-1234567')
+app.config['SECRET_KEY'] = 'exact-same-secret-key-for-both-123'
 app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
 
 if app.config['DB_TYPE'] == 'postgres':
@@ -42,10 +42,6 @@ else:
     dir_path = path.dirname(path.realpath(__file__))
     db_path = path.join(dir_path, "vika_malykh_orm.db")
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
-    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-        'pool_recycle': 280,
-        'pool_pre_ping': True,
-    }
 
 db.init_app(app)
 
