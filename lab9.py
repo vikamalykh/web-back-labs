@@ -35,6 +35,39 @@ def db_close(conn, cur):
 def is_authenticated():
     return 'user_authenticated' in session and session['user_authenticated']
 
+def generate_non_overlapping_positions():
+    positions = []
+    attempts = 0
+    max_attempts = 1000
+    
+    # размеры коробки (в процентах от контейнера)
+    box_width = 10  # ~120px при ширине контейнера 1200px
+    box_height = 12  # ~84px при высоте контейнера 700px
+    
+    while len(positions) < 10 and attempts < max_attempts:
+        top = random.randint(5, 85 - box_height)
+        left = random.randint(5, 85 - box_width)
+
+        overlap = False
+        for (existing_top, existing_left) in positions:
+            if (abs(top - existing_top) < box_height and 
+                abs(left - existing_left) < box_width):
+                overlap = True
+                break
+        
+        if not overlap:
+            positions.append((top, left))
+        
+        attempts += 1
+
+    while len(positions) < 10:
+        top = random.randint(5, 85 - box_height)
+        left = random.randint(5, 85 - box_width)
+        positions.append((top, left))
+    
+    return positions
+
+
 @lab9.route('/lab9/')
 def main():
     conn, cur = db_connect()
@@ -81,8 +114,12 @@ def main():
         gift_images = [f"present{i+1}.jpg" for i in range(10)]
         box_images = [f"box{i+1}.png" for i in range(10)]
         
+        # Генерируем непересекающиеся позиции
+        positions = generate_non_overlapping_positions()
+        
         for i in range(10):
-            params = (user_id, i, random.randint(10, 85), random.randint(5, 85),
+            top_pos, left_pos = positions[i]
+            params = (user_id, i, top_pos, left_pos,
                      congratulations[i], gift_images[i], box_images[i], i >= 5)
             
             if current_app.config['DB_TYPE'] == 'postgres':
@@ -330,18 +367,21 @@ def santa():
     conn, cur = db_connect()
     
     try:
+        positions = generate_non_overlapping_positions()
+        
         if current_app.config['DB_TYPE'] == 'postgres':
-            cur.execute("""
-                UPDATE lab9_gifts 
-                SET opened = FALSE, 
-                    top_position = FLOOR(RANDOM() * 75 + 10)::INTEGER,
-                    left_position = FLOOR(RANDOM() * 80 + 5)::INTEGER
-                WHERE user_id = %s
-            """, (user_id,))
+            for i in range(10):
+                top_pos, left_pos = positions[i]
+                cur.execute("""
+                    UPDATE lab9_gifts 
+                    SET opened = FALSE, 
+                        top_position = %s, 
+                        left_position = %s
+                    WHERE user_id = %s AND position_id = %s
+                """, (top_pos, left_pos, user_id, i))
         else:
             for i in range(10):
-                top_pos = random.randint(10, 85)
-                left_pos = random.randint(5, 85)
+                top_pos, left_pos = positions[i]
                 cur.execute("""
                     UPDATE lab9_gifts 
                     SET opened = 0, 
