@@ -1,8 +1,16 @@
 function openGift(giftId) {
     const giftBox = document.querySelector(`.gift-box[data-id="${giftId}"]`);
+    const requireAuth = giftBox.getAttribute('data-require-auth') === 'True' || 
+                        giftBox.getAttribute('data-require-auth') === 'true' || 
+                        giftBox.getAttribute('data-require-auth') === '1';
     
     if (giftBox.classList.contains('opened')) {
         showMessage('Этот подарок уже открыт!', 'warning');
+        return;
+    }
+    
+    if (giftBox.classList.contains('locked')) {
+        showMessage('Стань нашим Эльфом, чтоб отккрыть все подарки!', 'warning');
         return;
     }
     
@@ -19,7 +27,6 @@ function openGift(giftId) {
             document.getElementById('opened-count').textContent = data.opened_count;
             document.getElementById('remaining-count').textContent = data.remaining;
             
-            // Обновляем коробку на открытую
             updateGiftBox(giftId, data.message, data.image);
             giftBox.classList.add('opened');
             
@@ -75,19 +82,28 @@ function showMessage(text, type) {
     
     setTimeout(() => {
         messageArea.style.display = 'none';
-    }, 3000);
+    }, 5000);
 }
 
 function resetGifts() {
     if (confirm('Вы уверены, что хотите сбросить все подарки? Дедушка Мороз наполнит их снова!')) {
-        fetch('/lab9/reset', {
+        console.log("Отправка запроса на сброс подарков...");
+        
+        fetch('/lab9/santa', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log("Получен ответ:", response.status, response.statusText);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log("Данные ответа:", data);
             if (data.success) {
                 showMessage(data.message, 'success');
                 setTimeout(() => {
@@ -95,11 +111,12 @@ function resetGifts() {
                 }, 1500);
             } else {
                 showMessage(data.message, 'error');
+                console.error("Ошибка от сервера:", data.message);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showMessage('Ошибка при сбросе подарков', 'error');
+            showMessage('Ошибка при сбросе подарков: ' + error.message, 'error');
         });
     }
 }

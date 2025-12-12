@@ -1,13 +1,16 @@
-from flask import Blueprint, render_template, session, jsonify, request, current_app
+from flask import Blueprint, render_template, session, jsonify, request, current_app, redirect, url_for
 import random
 import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import sqlite3
+from os import path
 
 lab9 = Blueprint('lab9', __name__)
 
 def db_connect():
     if current_app.config['DB_TYPE'] == 'postgres':
-        import psycopg2
-        from psycopg2.extras import RealDictCursor
         conn = psycopg2.connect(
             host='127.0.0.1',
             database='viktoriya_malykh_knowledge_base',
@@ -16,8 +19,6 @@ def db_connect():
         )
         cur = conn.cursor(cursor_factory=RealDictCursor)
     else:
-        import sqlite3
-        from os import path
         dir_path = path.dirname(path.realpath(__file__))
         db_path = path.join(dir_path, "database.db")
         conn = sqlite3.connect(db_path)
@@ -31,34 +32,39 @@ def db_close(conn, cur):
     cur.close()
     conn.close()
 
+def is_authenticated():
+    return 'user_authenticated' in session and session['user_authenticated']
+
 @lab9.route('/lab9/')
 def main():
     conn, cur = db_connect()
 
+    # ID пользователя, если нет
     if 'lab9_user_id' not in session:
         session['lab9_user_id'] = str(uuid.uuid4())
     
     user_id = session['lab9_user_id']
+    is_auth = is_authenticated()
 
+    user_exists = False
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT id FROM lab9_users WHERE id = %s", (user_id,))
+        cur.execute("SELECT 1 FROM lab9_users WHERE id = %s", (user_id,))
     else:
-        cur.execute("SELECT id FROM lab9_users WHERE id = ?", (user_id,))
+        cur.execute("SELECT 1 FROM lab9_users WHERE id = ?", (user_id,))
     
     if not cur.fetchone():
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("INSERT INTO lab9_users (id) VALUES (%s)", (user_id,))
         else:
             cur.execute("INSERT INTO lab9_users (id) VALUES (?)", (user_id,))
-    
+
+    # создаём подарки
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT COUNT(*) as count FROM lab9_gifts WHERE user_id = %s", (user_id,))
+        cur.execute("SELECT COUNT(*) as cnt FROM lab9_gifts WHERE user_id = %s", (user_id,))
     else:
-        cur.execute("SELECT COUNT(*) as count FROM lab9_gifts WHERE user_id = ?", (user_id,))
+        cur.execute("SELECT COUNT(*) as cnt FROM lab9_gifts WHERE user_id = ?", (user_id,))
     
-    count_result = cur.fetchone()
-    
-    if count_result['count'] == 0:
+    if cur.fetchone()['cnt'] == 0:
         congratulations = [
             "С Новым Годом! Пусть сбудутся все мечты!",
             "Пусть бой курантов исполнит самое заветное!",
@@ -72,54 +78,55 @@ def main():
             "Пусть сказка заглянет к вам в дом и останется!"
         ]
         
-        gift_images = [
-            "present1.jpg", "present2.jpg", "present3.jpg", 
-            "present4.jpg", "present5.jpg", "present6.jpg",
-            "present7.jpg", "present8.jpg", "present9.jpg", 
-            "present10.jpg"
-        ]
-
-        box_images = [
-            "box1.png", "box2.png", "box3.png", "box4.png", "box5.png",
-            "box6.png", "box7.png", "box8.png", "box9.png", "box10.png"
-        ]
+        gift_images = [f"present{i+1}.jpg" for i in range(10)]
+        box_images = [f"box{i+1}.png" for i in range(10)]
         
         for i in range(10):
+            params = (user_id, i, random.randint(10, 85), random.randint(5, 85),
+                     congratulations[i], gift_images[i], box_images[i], i >= 5)
+            
             if current_app.config['DB_TYPE'] == 'postgres':
                 cur.execute("""
                     INSERT INTO lab9_gifts 
-                    (user_id, position_id, top_position, left_position, message, image, box_image)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
-                """, (user_id, i, random.randint(10, 85), random.randint(5, 85), 
-                     congratulations[i], gift_images[i], box_images[i]))
+                    (user_id, position_id, top_position, left_position, message, image, box_image, require_auth)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """, params)
             else:
                 cur.execute("""
                     INSERT INTO lab9_gifts 
-                    (user_id, position_id, top_position, left_position, message, image, box_image)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, (user_id, i, random.randint(10, 85), random.randint(5, 85),
-                     congratulations[i], gift_images[i], box_images[i]))
+                    (user_id, position_id, top_position, left_position, message, image, box_image, require_auth)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, params)
 
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT position_id, top_position, left_position, opened, message, image, box_image FROM lab9_gifts WHERE user_id = %s ORDER BY position_id", (user_id,))
+        cur.execute("""
+            SELECT position_id, top_position, left_position, opened, message, image, box_image, require_auth 
+            FROM lab9_gifts WHERE user_id = %s ORDER BY position_id
+        """, (user_id,))
     else:
-        cur.execute("SELECT position_id, top_position, left_position, opened, message, image, box_image FROM lab9_gifts WHERE user_id = ? ORDER BY position_id", (user_id,))
+        cur.execute("""
+            SELECT position_id, top_position, left_position, opened, message, image, box_image, require_auth 
+            FROM lab9_gifts WHERE user_id = ? ORDER BY position_id
+        """, (user_id,))
     
     gifts = cur.fetchall()
     
-    # Считаем открытые
+    # открытые
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT COUNT(*) as count FROM lab9_gifts WHERE user_id = %s AND opened = TRUE", (user_id,))
+        cur.execute("SELECT COUNT(*) as cnt FROM lab9_gifts WHERE user_id = %s AND opened = TRUE", (user_id,))
     else:
-        cur.execute("SELECT COUNT(*) as count FROM lab9_gifts WHERE user_id = ? AND opened = TRUE", (user_id,))
+        cur.execute("SELECT COUNT(*) as cnt FROM lab9_gifts WHERE user_id = ? AND opened = TRUE", (user_id,))
     
-    opened_result = cur.fetchone()
-    opened_count = opened_result['count']
-    remaining = 10 - opened_count
+    opened_count = cur.fetchone()['cnt']
     
     db_close(conn, cur)
     
-    return render_template('lab9/index.html', gifts=gifts, opened_count=opened_count, remaining=remaining)
+    return render_template('lab9/index.html',
+                         gifts=gifts,
+                         opened_count=opened_count,
+                         remaining=10 - opened_count,
+                         is_auth=is_auth,
+                         login=session.get('login'))
 
 @lab9.route('/lab9/open_gift', methods=['POST'])
 def open_gift():
@@ -127,13 +134,34 @@ def open_gift():
     if not user_id:
         return jsonify({'success': False, 'message': 'Пользователь не найден'})
     
+    is_auth = is_authenticated()
     data = request.json
     gift_id = data.get('gift_id')
     
     conn, cur = db_connect()
     
     try:
-        # Проверяем сколько открыто
+        # подарок с авторизацией
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT require_auth, opened FROM lab9_gifts WHERE user_id = %s AND position_id = %s", (user_id, gift_id))
+        else:
+            cur.execute("SELECT require_auth, opened FROM lab9_gifts WHERE user_id = ? AND position_id = ?", (user_id, gift_id))
+        
+        gift_info = cur.fetchone()
+        
+        if not gift_info:
+            return jsonify({'success': False, 'message': 'Подарок не найден'})
+        
+        if gift_info['require_auth'] and not is_auth:
+            return jsonify({
+                'success': False,
+                'message': 'Стань нашим эльфом, чтоб получить больше подарков!'
+            })
+        
+        if gift_info['opened']:
+            return jsonify({'success': False, 'message': 'Этот подарок уже открыт!'})
+        
+        # сколько открыто
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("SELECT COUNT(*) as count FROM lab9_gifts WHERE user_id = %s AND opened = TRUE", (user_id,))
         else:
@@ -145,28 +173,26 @@ def open_gift():
         if opened_count >= 3:
             return jsonify({
                 'success': False,
-                'message': 'Вы уже открыли максимальное количество подарков (3)!'
+                'message': 'Милый Эльф, Вы уже открыли максимальное количество подарков!'
             })
         
-        # Проверяем подарок (правильные имена столбцов)
+        # подарок открыт
         if current_app.config['DB_TYPE'] == 'postgres':
-            cur.execute("SELECT opened, message, image, box_image FROM lab9_gifts WHERE user_id = %s AND position_id = %s", (user_id, gift_id))
+            cur.execute("""
+                UPDATE lab9_gifts 
+                SET opened = TRUE 
+                WHERE user_id = %s AND position_id = %s
+                RETURNING message, image
+            """, (user_id, gift_id))
         else:
-            cur.execute("SELECT opened, message, image, box_image FROM lab9_gifts WHERE user_id = ? AND position_id = ?", (user_id, gift_id))
+            cur.execute("""
+                UPDATE lab9_gifts 
+                SET opened = TRUE 
+                WHERE user_id = ? AND position_id = ?
+            """, (user_id, gift_id))
+            cur.execute("SELECT message, image FROM lab9_gifts WHERE user_id = ? AND position_id = ?", (user_id, gift_id))
         
-        gift = cur.fetchone()
-        
-        if not gift:
-            return jsonify({'success': False, 'message': 'Подарок не найден'})
-        
-        if gift['opened']:
-            return jsonify({'success': False, 'message': 'Этот подарок уже открыт!'})
-        
-        # Открываем подарок
-        if current_app.config['DB_TYPE'] == 'postgres':
-            cur.execute("UPDATE lab9_gifts SET opened = TRUE WHERE user_id = %s AND position_id = %s", (user_id, gift_id))
-        else:
-            cur.execute("UPDATE lab9_gifts SET opened = TRUE WHERE user_id = ? AND position_id = ?", (user_id, gift_id))
+        result = cur.fetchone()
         
         new_opened_count = opened_count + 1
         remaining = 10 - new_opened_count
@@ -175,9 +201,8 @@ def open_gift():
         
         return jsonify({
             'success': True,
-            'message': gift['message'],
-            'image': gift['image'],  # Исправлено с gift_image на image
-            'box_image': gift['box_image'],
+            'message': result['message'],
+            'image': result['image'],
             'opened_count': new_opened_count,
             'remaining': remaining
         })
@@ -185,12 +210,119 @@ def open_gift():
     except Exception as e:
         print(f"Ошибка при открытии подарка: {e}")
         conn.rollback()
-        return jsonify({'success': False, 'message': 'Ошибка при открытии подарка'})
+        return jsonify({'success': False, 'message': f'Ошибка при открытии подарка: {str(e)}'})
     finally:
         db_close(conn, cur)
 
-@lab9.route('/lab9/reset', methods=['POST'])
-def reset():
+@lab9.route('/lab9/login', methods=['GET', 'POST'])
+def login():
+    
+    if request.method == 'GET':
+        return render_template('lab9/login.html')
+    
+    login_val = request.form.get('login')
+    password = request.form.get('password')
+    
+    if not login_val or not password:
+        return render_template('lab9/login.html', error='Заполните все поля')
+    
+    conn, cur = db_connect()
+    
+    try:
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT id, password FROM lab9_auth_users WHERE login = %s", (login_val,))
+        else:
+            cur.execute("SELECT id, password FROM lab9_auth_users WHERE login = ?", (login_val,))
+        
+        user = cur.fetchone()
+        
+        if not user:
+            return render_template('lab9/login.html', error='Неверный логин или пароль')
+        
+        if not check_password_hash(user['password'], password):
+            return render_template('lab9/login.html', error='Неверный логин или пароль')
+        
+        session['user_authenticated'] = True
+        session['login'] = login_val
+        session['auth_user_id'] = user['id']
+        
+        return redirect('/lab9/')
+        
+    except Exception as e:
+        print(f"Ошибка при входе: {e}")
+        return render_template('lab9/login.html', error=f'Ошибка: {str(e)}')
+    finally:
+        db_close(conn, cur)
+
+@lab9.route('/lab9/register', methods=['GET', 'POST'])
+def register():
+    
+    if request.method == 'GET':
+        return render_template('lab9/register.html')
+    
+    login_val = request.form.get('login')
+    password = request.form.get('password')
+    confirm_password = request.form.get('confirm_password')
+    
+    if not all([login_val, password, confirm_password]):
+        return render_template('lab9/register.html', error='Заполните все поля')
+    
+    if password != confirm_password:
+        return render_template('lab9/register.html', error='Пароли не совпадают')
+    
+    if len(password) < 4:
+        return render_template('lab9/register.html', error='Пароль должен быть не менее 4 символов')
+    
+    conn, cur = db_connect()
+    
+    try:
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT id FROM lab9_auth_users WHERE login = %s", (login_val,))
+        else:
+            cur.execute("SELECT id FROM lab9_auth_users WHERE login = ?", (login_val,))
+        
+        if cur.fetchone():
+            return render_template('lab9/register.html', error='Логин уже занят')
+        
+        password_hash = generate_password_hash(password)
+        
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("INSERT INTO lab9_auth_users (login, password) VALUES (%s, %s) RETURNING id", 
+                       (login_val, password_hash))
+            user_id = cur.fetchone()['id']
+        else:
+            cur.execute("INSERT INTO lab9_auth_users (login, password) VALUES (?, ?)", 
+                       (login_val, password_hash))
+            user_id = cur.lastrowid
+        
+        session['user_authenticated'] = True
+        session['login'] = login_val
+        session['auth_user_id'] = user_id
+        
+        conn.commit()
+        return redirect('/lab9/')
+        
+    except Exception as e:
+        print(f"Ошибка при регистрации: {e}")
+        conn.rollback()
+        return render_template('lab9/register.html', error=f'Ошибка: {str(e)}')
+    finally:
+        db_close(conn, cur)
+
+@lab9.route('/lab9/logout')
+def logout():
+    session.pop('user_authenticated', None)
+    session.pop('login', None)
+    session.pop('auth_user_id', None)
+    return redirect('/lab9/')
+
+
+
+@lab9.route('/lab9/santa', methods=['POST'])
+def santa():
+    if not is_authenticated():
+        return jsonify({'success': False, 'message': 'Только для авторизованных пользователей!'})
+    
     user_id = session.get('lab9_user_id')
     if not user_id:
         return jsonify({'success': False, 'message': 'Пользователь не найден'})
@@ -198,30 +330,31 @@ def reset():
     conn, cur = db_connect()
     
     try:
-        # Сбрасываем все подарки и обновляем позиции
-        for i in range(10):
-            if current_app.config['DB_TYPE'] == 'postgres':
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("""
+                UPDATE lab9_gifts 
+                SET opened = FALSE, 
+                    top_position = FLOOR(RANDOM() * 75 + 10)::INTEGER,
+                    left_position = FLOOR(RANDOM() * 80 + 5)::INTEGER
+                WHERE user_id = %s
+            """, (user_id,))
+        else:
+            for i in range(10):
+                top_pos = random.randint(10, 85)
+                left_pos = random.randint(5, 85)
                 cur.execute("""
                     UPDATE lab9_gifts 
-                    SET opened = FALSE, 
-                        top_position = %s, 
-                        left_position = %s
-                    WHERE user_id = %s AND position_id = %s
-                """, (random.randint(10, 85), random.randint(5, 85), user_id, i))
-            else:
-                cur.execute("""
-                    UPDATE lab9_gifts 
-                    SET opened = FALSE, 
+                    SET opened = 0, 
                         top_position = ?, 
                         left_position = ?
                     WHERE user_id = ? AND position_id = ?
-                """, (random.randint(10, 85), random.randint(5, 85), user_id, i))
+                """, (top_pos, left_pos, user_id, i))
         
         conn.commit()
         
         return jsonify({
             'success': True,
-            'message': '🎅 Дедушка Мороз наполнил все подарки снова!'
+            'message': '🎅Дедушка Мороз наполнил все подарки снова!'
         })
         
     except Exception as e:
