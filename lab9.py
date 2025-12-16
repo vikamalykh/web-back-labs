@@ -192,7 +192,7 @@ def open_gift():
         if gift_info['require_auth'] and not is_auth:
             return jsonify({
                 'success': False,
-                'message': 'Стань нашим эльфом, чтоб получить больше подарков!'
+                'message': 'Стань нашим эльфом, чтоб открыть больше подарков!'
             })
         
         if gift_info['opened']:

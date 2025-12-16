@@ -10,7 +10,7 @@ function openGift(giftId) {
     }
     
     if (giftBox.classList.contains('locked')) {
-        showMessage('Стань нашим Эльфом, чтоб отккрыть все подарки!', 'warning');
+        showMessage('Стань нашим Эльфом, чтоб открыть все подарки!', 'warning');
         return;
     }
     
