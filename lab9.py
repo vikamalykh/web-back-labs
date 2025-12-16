@@ -79,7 +79,6 @@ def main():
     user_id = session['lab9_user_id']
     is_auth = is_authenticated()
 
-    user_exists = False
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("SELECT 1 FROM lab9_users WHERE id = %s", (user_id,))
     else:
@@ -114,7 +113,7 @@ def main():
         gift_images = [f"present{i+1}.jpg" for i in range(10)]
         box_images = [f"box{i+1}.png" for i in range(10)]
         
-        # Генерируем непересекающиеся позиции
+        # генерируем непересекающиеся позиции
         positions = generate_non_overlapping_positions()
         
         for i in range(10):

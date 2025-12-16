@@ -43,9 +43,11 @@
     <div class="container">
         <div class="gift-container" id="gift-container">
             {% for gift in gifts %}
+                <!-- ИЗМЕНЕНИЕ 1: добавил onclick на весь div -->
                 <div class="gift-box {% if gift.opened %}opened{% endif %} {% if not is_auth and gift.require_auth %}locked{% endif %}" 
                      data-id="{{ gift.position_id }}"
                      data-require-auth="{{ gift.require_auth }}"
+                     onclick="openGift({{ gift.position_id }})"
                      style="top: {{ gift.top_position }}%; left: {{ gift.left_position }}%;">
                     
                     {% if gift.opened %}
@@ -63,9 +65,9 @@
                                     🔒
                                 </div>
                             {% endif %}
+                            <!-- ИЗМЕНЕНИЕ 2: убрал onclick с картинки -->
                             <img src="{{ url_for('static', filename='lab9/' + gift.box_image) }}" 
                                  alt="Новогодняя коробка" class="gift-closed"
-                                 onclick="openGift({{ gift.position_id }})"
                                  {% if not is_auth and gift.require_auth %}style="opacity: 0.6;"{% endif %}>
                         </div>
                     {% endif %}
