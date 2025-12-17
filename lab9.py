@@ -347,9 +347,34 @@ def register():
 
 @lab9.route('/lab9/logout')
 def logout():
+    user_id = session.get('lab9_user_id')
+
+    if user_id:
+        conn, cur = db_connect()
+        try:
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("""
+                    UPDATE lab9_gifts 
+                    SET opened = FALSE
+                    WHERE user_id = %s
+                """, (user_id,))
+            else:
+                cur.execute("""
+                    UPDATE lab9_gifts 
+                    SET opened = 0
+                    WHERE user_id = ?
+                """, (user_id,))
+            conn.commit()
+        except Exception as e:
+            print(f"Ошибка при сбросе подарков: {e}")
+            conn.rollback()
+        finally:
+            db_close(conn, cur)
+
     session.pop('user_authenticated', None)
     session.pop('login', None)
     session.pop('auth_user_id', None)
+    
     return redirect('/lab9/')
 
 
